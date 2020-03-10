@@ -38,23 +38,18 @@ app.get('/api/products/:productId', (req, res, next) => {
   `;
 
   const params = [productId];
-  if (productId > 6 || productId <= 0) {
+  if (!Number(productId)) {
     return next(new ClientError('Invalid product', 400));
-  } else if (productId === '') {
-    res.status(500).json({
-      error: 'An unexpected error occurred'
-    });
   }
   db.query(sql, params)
     .then(result => {
-      return res.json(result.rows[0]);
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'This ID does not exist' });
+      } else {
+        return res.json(result.rows[0]);
+      }
     })
-    .catch(err => {
-      console.error(err);
-      return res.status(404).json({
-        error: 'There may be an error querying the database.'
-      });
-    });
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {
