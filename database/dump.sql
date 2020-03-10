@@ -16,6 +16,10 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.products DROP CONSTRAINT products_pkey;
+ALTER TABLE public.products ALTER COLUMN "productId" DROP DEFAULT;
+DROP SEQUENCE public."products_productId_seq";
+DROP TABLE public.products;
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -44,6 +48,74 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.products (
+    "productId" integer NOT NULL,
+    name text NOT NULL,
+    price integer NOT NULL,
+    image text NOT NULL,
+    "shortDescription" text NOT NULL,
+    "longDescription" text NOT NULL
+);
+
+
+--
+-- Name: products_productId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."products_productId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: products_productId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."products_productId_seq" OWNED BY public.products."productId";
+
+
+--
+-- Name: products productId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN "productId" SET DEFAULT nextval('public."products_productId_seq"'::regclass);
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.products ("productId", name, price, image, "shortDescription", "longDescription") FROM stdin;
+\.
+
+
+--
+-- Name: products_productId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."products_productId_seq"', 1, false);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY ("productId");
 
 
 --

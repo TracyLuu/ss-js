@@ -1,0 +1,27 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+  object-fit: contain;
+  width: 200px;
+  height: 200px;
+}
+
+.alignment{
+  height: 350px;
+}
+
+.product {
+  font-weight: 600;
+}
+
+.price {
+  color: gray;
+  font-size: .75rem;
+  padding: 1%;
+}
+
+.description {
+  font-size: .75rem;
+}
