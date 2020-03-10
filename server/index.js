@@ -29,6 +29,29 @@ app.get('/api/products', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/products/:productId', (req, res, next) => {
+  const { productId } = req.params;
+  const sql = `
+    select *
+    from "products"
+    where "productId" = $1
+  `;
+
+  const params = [productId];
+  if (!Number(productId)) {
+    return next(new ClientError('Invalid product', 400));
+  }
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'This ID does not exist' });
+      } else {
+        return res.json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
