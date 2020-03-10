@@ -14,12 +14,11 @@ export default class ProductList extends React.Component {
     fetch('/api/products')
       .then(response => {
         return response.json();
-      });
-    // .then(users => this.setState({
-    // users,
-    // isLoading: false
-    // })
-    // );
+      })
+      .then(data => this.setState({
+        products: data
+      })
+      );
   }
 
   componentDidMount() {
@@ -30,14 +29,8 @@ export default class ProductList extends React.Component {
     return (
       <div>
         <div className="container">
-          <div className="row">
-            <div className="col-4">
-              <ProductListItem />
-            </div>
-            <div className="col-4">
-            </div>
-            <div className="col-4">
-            </div>
+          <div className="row card">
+            <ProductListItem products={this.state.products} />
           </div>
         </div>
       </div>
