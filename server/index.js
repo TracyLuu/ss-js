@@ -29,6 +29,39 @@ app.get('/api/products', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/products/:productId', (req, res, next) => {
+  const { productId } = req.params;
+  const sql = `
+    select *
+    from "products"
+    where "productId" = $1
+  `;
+
+  const params = [productId];
+  if (productId.length < productId || productId <= 0) {
+    return next(new ClientError('Invalid product', 400));
+  }
+  db.query(sql, params)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
+// app.get('/api/products/:productId', (req, res, next) => {
+//   const { productId } = req.params;
+//   const sql = `
+//   select "products" ("image","name", "price", "shortDescription")
+//   values ($1, $2, $3, $5)
+//   where "productId" = $4
+//   `;
+
+//   const params = [productId, req.body.image, req.body.name, req.body.price, req.body.shortDescription];
+
+//   db.query(sql, params)
+//     .then(result =>
+//       res.json(result.rows))
+//     .catch(err => next(err));
+// });
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
