@@ -29,7 +29,7 @@ export default class ProductList extends React.Component {
     return (
       <div>
         <div className="container">
-          <div className="row card">
+          <div className="row">
             <ProductListItem products={this.state.products} />
           </div>
         </div>

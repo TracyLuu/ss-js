@@ -2,12 +2,14 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.img-container {
+img {
+  object-fit: contain;
+  width: 200px;
   height: 200px;
 }
 
-.constrained-img {
-  width: 100%;
+.alignment{
+  height: 350px;
 }
 
 .product {
