@@ -1,5 +1,4 @@
 import React from 'react';
-import ProductDetails from './product-details';
 
 export default class ProductListItem extends React.Component {
 
@@ -24,14 +23,6 @@ export default class ProductListItem extends React.Component {
             </div>
           </div>
         )
-      );
-    } else {
-      return (
-        <div>
-          <div>
-            <ProductDetails />
-          </div>
-        </div>
       );
     }
   }
