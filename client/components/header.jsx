@@ -4,9 +4,9 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>Name of My Wicked Sales</div>
-        <div>-Future Logo-</div>
+      <div className="col-12">
+        <div className="title"></div>
+        <div className="logo"></div>
       </div>
     );
   }
