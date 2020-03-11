@@ -9,7 +9,7 @@ export default class ProductDetails extends React.Component {
   }
 
   getOne() {
-    fetch('/api/products/1')
+    fetch(`/api/products/${this.props.view.params.productId}`)
       .then(response => {
         return response.json();
       })
@@ -26,22 +26,26 @@ export default class ProductDetails extends React.Component {
     if (this.state.product === null) {
       return (
         <div>
-          Something
+          Loading...
         </div>
       );
     } else {
       return (
         <div className="card">
           <div className="container">
+            <div className="back-to-catalog" onClick={(name, params) => this.props.setView(
+              'catalog',
+              {})}>{'< Back to Catalog'}</div>
             <div className="row">
-              <img className="col-8" src={this.state.product.image}></img>
-            </div>
-            <div className="col-4">
-              <div>{this.state.product.name}</div>
-              <div>${this.state.product.price / Math.pow(10, 2)}</div>
+              <img className="image-description col-6" src={this.state.product.image}></img>
+              <div className="col-6">
+                <div className="title-description">{this.state.product.name}</div>
+                <div className="price-description">${this.state.product.price / Math.pow(10, 2)}</div>
+                <div className="short-description">{this.state.product.shortDescription}</div>
+              </div>
             </div>
           </div>
-          <div className="col-12">{this.state.product.longDescription}</div>
+          <div className="long-description col-12">{this.state.product.longDescription}</div>
         </div>
       );
     }

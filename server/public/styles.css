@@ -4,13 +4,38 @@
 
 .smallImg {
   object-fit: contain;
-  width: 200px;
   height: 200px;
 }
 
-/* .imageDescription {
+.image-description {
+  object-fit: contain;
+  width: 200px;
+  height: 300px;
+  padding-bottom: 2%;
+}
 
-} */
+.title-description {
+  font-size: 1.7rem;
+  padding-top: 2%;
+}
+
+.price-description {
+  color:gray;
+  padding-bottom: 1%;
+}
+
+.short-description {
+  font-size: .8rem;
+}
+
+.long-description {
+  font-size: .8rem;
+}
+
+.back-to-catalog {
+  font-size: .8rem;
+  color: gray;
+}
 
 .alignment{
   height: 350px;

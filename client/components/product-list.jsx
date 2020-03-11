@@ -30,7 +30,7 @@ export default class ProductList extends React.Component {
       <div>
         <div className="container">
           <div className="row">
-            <ProductListItem products={this.state.products} />
+            <ProductListItem setView={this.props.setView} view={this.props.view} products={this.state.products} />
           </div>
         </div>
       </div>
