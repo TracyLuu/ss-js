@@ -22,7 +22,7 @@ export default class ProductListItem extends React.Component {
     //         <div className="alignment card mt-2" onClick={() => this.toggleCard()}>
     //           <div className="h-50">
     //             <div>
-    //               <img className="card-img-top" src={product.image}></img>
+    //               <img className="smallImg card-img-top" src={product.image}></img>
     //             </div>
     //             <div className="card-body">
     //               <div className="product">{product.name}</div>

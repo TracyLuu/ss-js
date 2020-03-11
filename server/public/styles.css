@@ -2,11 +2,15 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-img {
+.smallImg {
   object-fit: contain;
   width: 200px;
   height: 200px;
 }
+
+/* .imageDescription {
+
+} */
 
 .alignment{
   height: 350px;

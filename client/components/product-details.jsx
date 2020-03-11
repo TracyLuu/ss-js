@@ -8,24 +8,42 @@ export default class ProductDetails extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getOne() {
     fetch('/api/products/1')
       .then(response => {
         return response.json();
       })
-      .then(data => this.setState({
-        product: data
-      })
-      );
+      .then(product => {
+        this.setState({ product });
+      });
+  }
+
+  componentDidMount() {
+    this.getOne();
   }
 
   render() {
-    return (
-      <div>
-        <div>Back to Catalog</div>
-        <div>Hellooo!</div>
-      </div>
-    );
-
+    if (this.state.product === null) {
+      return (
+        <div>
+          Something
+        </div>
+      );
+    } else {
+      return (
+        <div className="card">
+          <div className="container">
+            <div className="row">
+              <img className="col-8" src={this.state.product.image}></img>
+            </div>
+            <div className="col-4">
+              <div>{this.state.product.name}</div>
+              <div>${this.state.product.price / Math.pow(10, 2)}</div>
+            </div>
+          </div>
+          <div className="col-12">{this.state.product.longDescription}</div>
+        </div>
+      );
+    }
   }
 }
