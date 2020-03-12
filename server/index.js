@@ -36,7 +36,6 @@ app.get('/api/products/:productId', (req, res, next) => {
     from "products"
     where "productId" = $1
   `;
-
   const params = [productId];
   if (!Number(productId)) {
     return next(new ClientError('Invalid product', 400));
@@ -50,6 +49,66 @@ app.get('/api/products/:productId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
+});
+
+app.get('/api/cart', (req, res, next) => {
+  res.status(200).json([]);
+});
+
+app.post('/api/cart', (req, res) => {
+  const { productId } = req.body;
+  if (!(Number(productId)) || productId <= 0) {
+    res.status(400).json({ err: 'ProductID should be positive number' });
+  }
+  const sql = `
+  select "price"
+  from "products"
+  where "productId" = $1
+  `;
+
+  const body = [productId];
+
+  db.query(sql, body)
+    .then(price => {
+      const sql = `insert into "carts"("cartId", "createdAt")
+      values(default, default )
+      returning "cartId"`;
+      return db.query(sql)
+        .then(cartId => {
+          return Object.assign(price.rows[0], cartId.rows[0]);
+        });
+    })
+    .then(combinedObj => {
+      req.session.cartId = combinedObj.cartId;
+      const sql = `insert into "cartItems" ("cartId", "productId", "price")
+    values ($1, $2, $3)
+    returning "cartItemId"`;
+
+      return db.query(sql, [combinedObj.cartId, productId, combinedObj.price])
+        .then(cartItemId => {
+          return Object.assign(cartItemId, combinedObj.cartId, productId, combinedObj.price);
+        });
+    })
+    .then(result => {
+      const sql = `
+      select "c"."cartItemId",
+      "c"."price",
+      "p"."productId",
+      "p"."image",
+      "p"."name",
+      "p"."shortDescription"
+      from "cartItems" as "c"
+      join "products" as "p" using ("productId")
+      where "c"."cartItemId" = $1`;
+
+      const cartItemId = result.rows[0].cartItemId;
+
+      return db.query(sql, [cartItemId])
+        .then(result2 => {
+          return Object.assign(result2, cartItemId);
+        });
+      // .then(result3 =>)
+    });
 });
 
 app.use('/api', (req, res, next) => {
