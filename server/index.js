@@ -69,7 +69,7 @@ app.get('/api/cart', (req, res, next) => {
     db.query(sql, [cartId])
       .then(shoppingCart => {
         const someObject = Object.assign(shoppingCart, cartId);
-        return someObject.rows;
+        return res.json(someObject.rows);
       })
       .catch(err => next(err));
   }
@@ -126,7 +126,7 @@ app.post('/api/cart', (req, res, next) => {
       return db.query(sql, [cartItemId])
         .then(fields => {
           const oneObject = Object.assign(fields.rows[0], cartItemId);
-          return oneObject;
+          return res.status(201).json(oneObject);
         })
         .then(fieldsObj => {
           res.status(201).json({ success: 'Cart Item Works!' });
