@@ -68,12 +68,14 @@ app.get('/api/cart', (req, res, next) => {
     const cartId = req.session.cartId;
     db.query(sql, [cartId])
       .then(shoppingCart => {
-        return Object.assign(shoppingCart, cartId);
-      });
+        const someObject = Object.assign(shoppingCart, cartId);
+        return someObject.rows;
+      })
+      .catch(err => next(err));
   }
 });
 
-app.post('/api/cart', (req, res) => {
+app.post('/api/cart', (req, res, next) => {
   const { productId } = req.body;
   if (!(Number(productId)) || productId <= 0) {
     res.status(400).json({ err: 'ProductID should be positive number' });
@@ -123,12 +125,14 @@ app.post('/api/cart', (req, res) => {
       const cartItemId = cartItems.rows[0].cartItemId;
       return db.query(sql, [cartItemId])
         .then(fields => {
-          return Object.assign(fields, cartItemId);
+          const oneObject = Object.assign(fields.rows[0], cartItemId);
+          return oneObject;
         })
         .then(fieldsObj => {
           res.status(201).json({ success: 'Cart Item Works!' });
         });
-    });
+    })
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {
