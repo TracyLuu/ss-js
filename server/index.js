@@ -52,7 +52,25 @@ app.get('/api/products/:productId', (req, res, next) => {
 });
 
 app.get('/api/cart', (req, res, next) => {
-  res.status(200).json([]);
+
+  if (!req.session.cartId) {
+    res.status(200).json([]);
+  } else {
+    const sql = `select "c"."cartItemId",
+    "c"."price",
+    "p"."productId",
+    "p"."image",
+    "p"."name",
+    "p"."shortDescription"
+    from "cartItems" as "c"
+    join "products" as "p" using("productId")
+    where "c"."cartId" = $1`;
+    const cartId = req.session.cartId;
+    db.query(sql, [cartId])
+      .then(shoppingCart => {
+        return Object.assign(shoppingCart, cartId);
+      });
+  }
 });
 
 app.post('/api/cart', (req, res) => {
@@ -65,31 +83,33 @@ app.post('/api/cart', (req, res) => {
   from "products"
   where "productId" = $1
   `;
-
   const body = [productId];
-
   db.query(sql, body)
     .then(price => {
-      const sql = `insert into "carts"("cartId", "createdAt")
-      values(default, default )
-      returning "cartId"`;
-      return db.query(sql)
-        .then(cartId => {
-          return Object.assign(price.rows[0], cartId.rows[0]);
-        });
+      if (req.session.cartId) {
+        const cookie = { cartId: req.session.cartId, price: price.rows[0].price };
+        return cookie;
+      } else {
+        const sql = `insert into "carts"("cartId", "createdAt")
+        values(default, default )
+        returning "cartId"`;
+        return db.query(sql)
+          .then(cartId => {
+            return Object.assign(price.rows[0], cartId.rows[0]);
+          });
+      }
     })
     .then(combinedObj => {
       req.session.cartId = combinedObj.cartId;
       const sql = `insert into "cartItems" ("cartId", "productId", "price")
     values ($1, $2, $3)
     returning "cartItemId"`;
-
       return db.query(sql, [combinedObj.cartId, productId, combinedObj.price])
         .then(cartItemId => {
           return Object.assign(cartItemId, combinedObj.cartId, productId, combinedObj.price);
         });
     })
-    .then(result => {
+    .then(cartItems => {
       const sql = `
       select "c"."cartItemId",
       "c"."price",
@@ -100,14 +120,14 @@ app.post('/api/cart', (req, res) => {
       from "cartItems" as "c"
       join "products" as "p" using ("productId")
       where "c"."cartItemId" = $1`;
-
-      const cartItemId = result.rows[0].cartItemId;
-
+      const cartItemId = cartItems.rows[0].cartItemId;
       return db.query(sql, [cartItemId])
-        .then(result2 => {
-          return Object.assign(result2, cartItemId);
+        .then(fields => {
+          return Object.assign(fields, cartItemId);
+        })
+        .then(fieldsObj => {
+          res.status(201).json({ success: 'Cart Item Works!' });
         });
-      // .then(result3 =>)
     });
 });
 
