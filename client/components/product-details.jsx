@@ -23,6 +23,7 @@ export default class ProductDetails extends React.Component {
   }
 
   render() {
+    const product = this.state.product;
     if (this.state.product === null) {
       return (
         <div>
@@ -31,6 +32,7 @@ export default class ProductDetails extends React.Component {
       );
     } else {
       return (
+
         <div className="card">
           <div className="container">
             <div className="back-to-catalog" onClick={(name, params) => this.props.setView(
@@ -41,7 +43,8 @@ export default class ProductDetails extends React.Component {
               <div className="col-6">
                 <div className="title-description">{this.state.product.name}</div>
                 <div className="price-description">${this.state.product.price / Math.pow(10, 2)}</div>
-                <div className="short-description">{this.state.product.shortDescription}</div>
+                <div className="pb-3 short-description">{this.state.product.shortDescription}</div>
+                <div><button type="button" className="btn btn-primary" onClick={() => this.props.addToCart(product)}>Add to Cart</button></div>
               </div>
             </div>
           </div>

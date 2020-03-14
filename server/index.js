@@ -127,9 +127,6 @@ app.post('/api/cart', (req, res, next) => {
         .then(fields => {
           const oneObject = Object.assign(fields.rows[0], cartItemId);
           return res.status(201).json(oneObject);
-        })
-        .then(fieldsObj => {
-          res.status(201).json({ success: 'Cart Item Works!' });
         });
     })
     .catch(err => next(err));
