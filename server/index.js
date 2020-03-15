@@ -52,7 +52,6 @@ app.get('/api/products/:productId', (req, res, next) => {
 });
 
 app.get('/api/cart', (req, res, next) => {
-
   if (!req.session.cartId) {
     res.status(200).json([]);
   } else {
