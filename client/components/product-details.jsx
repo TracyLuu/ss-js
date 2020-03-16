@@ -32,7 +32,6 @@ export default class ProductDetails extends React.Component {
       );
     } else {
       return (
-
         <div className="card">
           <div className="container">
             <div className="back-to-catalog" onClick={(name, params) => this.props.setView(
