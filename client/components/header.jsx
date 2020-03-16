@@ -14,7 +14,12 @@ export default class Header extends React.Component {
           </div>
           <div className="col-2 row pl-5">
             <div className="asset number"></div>
-            <div className="asset item">{this.props.cart.length} Items <i className="asset fas fa-shopping-cart"></i></div>
+            <div className="asset item" onClick={(name, params) => this.props.setView('cart',
+              {})}>
+              {this.props.cart.length} Items
+              <i className="asset fas fa-shopping-cart">
+              </i>
+            </div>
           </div>
         </div>
       </div>
