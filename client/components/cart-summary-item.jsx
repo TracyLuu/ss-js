@@ -3,7 +3,7 @@ import React from 'react';
 export default class cartSummaryItem extends React.Component {
 
   render() {
-    if (this.props.cart === []) {
+    if (this.props.cart.length === 0) {
       return (
         <div>There are no items in your cart.</div>
       );
