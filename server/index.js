@@ -133,15 +133,20 @@ app.post('/api/cart', (req, res, next) => {
 
 app.post('/api/orders', (req, res, next) => {
   const cartId = req.session.cartId;
+  const { orderId } = req.body;
   if (!(Number(cartId)) || cartId <= 0) {
     res.status(400).json({ err: 'cartId should exist and be positive number' });
   }
-  // const sql = `insert into "orders"("cartId", "name", "creditCard", "shippingAddress")
-  //       values($1, $2, $3, $4)
-  //       returning "cartId"`;
-  // console.log(req.body);
-  // db.query(sql)
-  //   .then(info => console.log(info));
+  const name = req.body.name;
+  const creditCard = req.body.creditCard;
+  const shippingAddress = req.body.shippingAddress;
+
+  const body = [orderId, name, creditCard, shippingAddress];
+  const sql = `insert into "orders"("name", "creditCard", "shippingAddress")
+        values($2, $3, $4)
+        where "cartId" = $1`;
+  db.query(sql, body)
+    .then(info => info);
 });
 
 app.use('/api', (req, res, next) => {
