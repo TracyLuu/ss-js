@@ -101,6 +101,7 @@ app.post('/api/cart', (req, res, next) => {
       }
     })
     .then(combinedObj => {
+
       req.session.cartId = combinedObj.cartId;
       const sql = `insert into "cartItems" ("cartId", "productId", "price")
     values ($1, $2, $3)
@@ -132,21 +133,27 @@ app.post('/api/cart', (req, res, next) => {
 });
 
 app.post('/api/orders', (req, res, next) => {
-  const cartId = req.session.cartId;
-  const { orderId } = req.body;
-  if (!(Number(cartId)) || cartId <= 0) {
-    res.status(400).json({ err: 'cartId should exist and be positive number' });
+
+  const { cartId } = req.session;
+
+  if (!(Number(cartId))) {
+    res.status(400).json({ err: 'There is no cartId' });
   }
   const name = req.body.name;
   const creditCard = req.body.creditCard;
   const shippingAddress = req.body.shippingAddress;
 
-  const body = [orderId, name, creditCard, shippingAddress];
-  const sql = `insert into "orders"("name", "creditCard", "shippingAddress")
-        values($2, $3, $4)
-        where "cartId" = $1`;
-  db.query(sql, body)
-    .then(info => info);
+  const sql = `
+    insert into "orders"
+    ("cartId", "name", "creditCard", "shippingAddress")
+    values($1, $2, $3, $4)
+    returning *
+    `;
+
+  const order = [cartId, name, creditCard, shippingAddress];
+
+  db.query(sql, order)
+    .then(info => res.send(info.rows));
 });
 
 app.use('/api', (req, res, next) => {
