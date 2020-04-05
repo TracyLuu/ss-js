@@ -153,7 +153,14 @@ app.post('/api/orders', (req, res, next) => {
   const order = [cartId, name, creditCard, shippingAddress];
 
   db.query(sql, order)
-    .then(info => res.send(info.rows));
+    .then(result => {
+      delete result.rows[0].cartId;
+      res.status(201).json(result.rows[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(400).json({ err: 'Error' });
+    });
 });
 
 app.use('/api', (req, res, next) => {
