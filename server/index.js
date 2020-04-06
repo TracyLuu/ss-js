@@ -137,7 +137,7 @@ app.post('/api/orders', (req, res, next) => {
   const { cartId } = req.session;
 
   if (!(Number(cartId))) {
-    res.status(400).json({ err: 'There is no cartId' });
+    return res.status(400).json({ err: 'There is no cartId' });
   }
   const name = req.body.name;
   const creditCard = req.body.creditCard;
@@ -154,7 +154,7 @@ app.post('/api/orders', (req, res, next) => {
 
   db.query(sql, order)
     .then(result => {
-      delete result.rows[0].cartId;
+      delete req.session.cartId;
       res.status(201).json(result.rows[0]);
     })
     .catch(err => {
