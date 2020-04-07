@@ -4,7 +4,7 @@ export default class CheckoutForm extends React.Component {
 
   render() {
     return (
-      <form className="container">
+      <form>
         <label className="container">
           <div className="row">
             Name:
@@ -28,13 +28,10 @@ export default class CheckoutForm extends React.Component {
             Shipping Address:
           </div>
           <div className="row">
-            <input type="text" className="form-control" name="shipping-address">
+            <input type="textarea" className="form-control" rows="3" name="shipping-address">
             </input>
           </div>
         </label>
-        <div>
-          <button type="submit" className="btn btn-primary">Place Order</button>
-        </div>
       </form>
     );
   }
