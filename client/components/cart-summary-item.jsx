@@ -9,7 +9,6 @@ export default class cartSummaryItem extends React.Component {
       );
     } else {
       return (
-
         this.props.cart.map((cartItem, index) =>
           <div key={index}>
             <div className="card row mb-3 p-3 flex-row">

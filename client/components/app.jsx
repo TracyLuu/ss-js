@@ -56,6 +56,14 @@ export default class App extends React.Component {
     });
   }
 
+  placeOrder({ name, creditCard, shippingAdress }) {
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, creditCard, shippingAdress })
+    });
+  }
+
   render() {
     if (this.state.view.name === 'catalog') {
       return (
@@ -83,6 +91,16 @@ export default class App extends React.Component {
             </div>
             <h2>My Cart</h2>
             <CartSummaryItem cart={this.state.cart} />
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="col-10">
+                Item Total: ${}
+              </div>
+              <div className="col-2">
+                <button className="btn btn-primary">Checkout</button>
+              </div>
+            </div>
           </div>
         </div>
       );
