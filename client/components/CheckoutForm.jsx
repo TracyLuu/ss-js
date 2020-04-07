@@ -10,7 +10,7 @@ export default class CheckoutForm extends React.Component {
             Name:
           </div>
           <div className="row">
-            <input type="text" name="name">
+            <input type="text" className="form-control" name="name">
             </input>
           </div>
         </label>
@@ -19,7 +19,7 @@ export default class CheckoutForm extends React.Component {
             Credit Card:
           </div>
           <div className="row">
-            <input type="text" name="credit-card">
+            <input type="text" className="form-control" name="credit-card">
             </input>
           </div>
         </label>
@@ -28,7 +28,7 @@ export default class CheckoutForm extends React.Component {
             Shipping Address:
           </div>
           <div className="row">
-            <input type="text" name="shipping-address">
+            <input type="text" className="form-control" name="shipping-address">
             </input>
           </div>
         </label>
