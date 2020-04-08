@@ -9,7 +9,6 @@ export default class Header extends React.Component {
           <div className="left-side pl-5 col-10">
             <div className="asset title"> <i className="fas fa-dollar-sign"></i> Wicked Sales</div>
             <div className="asset logo">
-
             </div>
           </div>
           <div className="col-2 row pl-5">
