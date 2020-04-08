@@ -75,6 +75,13 @@ export default class App extends React.Component {
       });
   }
 
+  getTotalCost() {
+    const cost = this.state.cart.map(info => info.price);
+    const total = cost.reduce((total, num) => total + num);
+    const totalCost = (total / Math.pow(10, 2));
+    return totalCost;
+  }
+
   render() {
     if (this.state.view.name === 'catalog') {
       return (
@@ -106,7 +113,7 @@ export default class App extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-10">
-                Item Total: ${}
+                Item Total: ${this.getTotalCost()}
               </div>
               <div className="col-2">
                 <button className="btn btn-primary" onClick={(name, params) => this.setView(
@@ -125,7 +132,7 @@ export default class App extends React.Component {
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <div className="container">
             <h2 className="pt-5">My Cart</h2>
-            <div className="price-description pt-2 pb-3">Order Total: ${}</div>
+            <div className="price-description pt-2 pb-3">Order Total: ${this.getTotalCost()}</div>
             <CheckoutForm cart={this.state.cart} placeOrder={this.state.placeOrder} />
 
             <div className="row">
