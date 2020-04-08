@@ -16,6 +16,7 @@ export default class App extends React.Component {
     this.getCartItems = this.getCartItems.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
+    this.getTotalCost = this.getTotalCost.bind(this);
   }
 
   componentDidMount() {
