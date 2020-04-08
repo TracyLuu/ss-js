@@ -134,19 +134,7 @@ export default class App extends React.Component {
           <div className="container">
             <h2 className="pt-5">My Cart</h2>
             <div className="price-description pt-2 pb-3">Order Total: ${this.getTotalCost()}</div>
-            <CheckoutForm cart={this.state.cart} placeOrder={this.state.placeOrder} />
-            <div className="row">
-              <div className="back-to-catalog col-9" onClick={(name, params) => this.setView(
-                'catalog',
-                {})}>
-                {'< Continue Shopping'}
-              </div>
-              <div className="col-3">
-                <button type="submit" className="btn btn-primary" onClick={(name, creditCard, shippingAddress) => this.placeOrder(
-                  'catalog',
-                  {})}>Place Order</button>
-              </div>
-            </div>
+            <CheckoutForm cart={this.state.cart} placeOrder={this.state.placeOrder} setView={this.setView} />
           </div>
         </div>
       );
