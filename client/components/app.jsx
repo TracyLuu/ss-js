@@ -134,7 +134,7 @@ export default class App extends React.Component {
           <div className="container">
             <h2 className="pt-5">My Cart</h2>
             <div className="price-description pt-2 pb-3">Order Total: ${this.getTotalCost()}</div>
-            <CheckoutForm cart={this.state.cart} placeOrder={this.state.placeOrder} setView={this.setView} />
+            <CheckoutForm cart={this.state.cart} placeOrder={this.placeOrder} setView={this.setView} />
           </div>
         </div>
       );

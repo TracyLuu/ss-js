@@ -35,17 +35,18 @@ export default class CheckoutForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.placeOrder(this.state);
+    this.props.setView('catalog', {});
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <label className="container">
           <div className="row">
             Name:
           </div>
           <div className="row">
-            <input type="text" className="form-control" name="name">
+            <input type="text" className="form-control" name="name" onChange={this.handleName}>
             </input>
           </div>
         </label>
@@ -54,7 +55,7 @@ export default class CheckoutForm extends React.Component {
             Credit Card:
           </div>
           <div className="row">
-            <input type="text" className="form-control" name="credit-card">
+            <input type="text" className="form-control" name="credit-card" onChange={this.handleCC}>
             </input>
           </div>
         </label>
@@ -63,8 +64,8 @@ export default class CheckoutForm extends React.Component {
             Shipping Address:
           </div>
           <div className="row">
-            <input type="textarea" className="form-control" rows="3" name="shipping-address">
-            </input>
+            <textarea className="form-control" name="shipping-address" onChange={this.handleShipping}>
+            </textarea>
           </div>
         </label>
         <div className="row">
@@ -74,9 +75,7 @@ export default class CheckoutForm extends React.Component {
             {'< Continue Shopping'}
           </div>
           <div className="col-3">
-            <button type="submit" className="btn btn-primary" onClick={(name, creditCard, shippingAddress) => this.props.placeOrder(
-              'catalog',
-              {})}>Place Order</button>
+            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Place Order</button>
           </div>
         </div>
       </form>
