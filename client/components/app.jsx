@@ -13,6 +13,7 @@ export default class App extends React.Component {
       cart: []
     };
     this.setView = this.setView.bind(this);
+    this.setCart = this.setCart.bind(this);
     this.getCartItems = this.getCartItems.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
@@ -71,6 +72,12 @@ export default class App extends React.Component {
     });
   }
 
+  setCart(cart) {
+    this.setState({
+      cart: cart
+    });
+  }
+
   getTotalCost() {
     const cost = this.state.cart.map(info => info.price);
     const total = cost.reduce((total, num) => total + num);
@@ -104,7 +111,7 @@ export default class App extends React.Component {
       return (
         <div>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
-          <CheckoutForm cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
+          <CheckoutForm cart={this.setCart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
         </div>
       );
     }

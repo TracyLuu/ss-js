@@ -36,7 +36,7 @@ export default class CheckoutForm extends React.Component {
     event.preventDefault();
     this.props.placeOrder(this.state);
     this.props.setView('catalog', {});
-    this.props.cart = [];
+    this.props.cart([]);
   }
 
   render() {
