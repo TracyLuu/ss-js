@@ -50,6 +50,18 @@ export default class App extends React.Component {
       });
   }
 
+  placeOrder({ name, creditCard, shippingAddress }) {
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, creditCard, shippingAddress })
+    })
+      .then(response => {
+        return response.json();
+      })
+      .catch(err => console.error(err));
+  }
+
   setView(name, params) {
     this.setState({
       view: {
@@ -57,23 +69,6 @@ export default class App extends React.Component {
         params: params
       }
     });
-  }
-
-  placeOrder({ name, creditCard, shippingAddress }) {
-    fetch('/api/orders', {
-      method: 'POST',
-      headders: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, creditCard, shippingAddress })
-    })
-      .then(result => {
-        this.setState({
-          view: {
-            name: 'catalog',
-            params: {}
-          },
-          cart: []
-        });
-      });
   }
 
   getTotalCost() {
@@ -102,40 +97,14 @@ export default class App extends React.Component {
       return (
         <div>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
-          <div className="container">
-            <div className="back-to-catalog" onClick={(name, params) => this.setView(
-              'catalog',
-              {})}>
-              {'< Back to Catalog'}
-            </div>
-            <h2>My Cart</h2>
-            <CartSummaryItem cart={this.state.cart} />
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col-10">
-                Item Total: ${this.getTotalCost()}
-              </div>
-              <div className="col-2">
-                <button className="btn btn-primary" onClick={(name, params) => this.setView(
-                  'checkout',
-                  {})}>
-                  Checkout
-                </button>
-              </div>
-            </div>
-          </div>
+          <CartSummaryItem cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} />
         </div>
       );
     } else if (this.state.view.name === 'checkout') {
       return (
         <div>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
-          <div className="container">
-            <h2 className="pt-5">My Cart</h2>
-            <div className="price-description pt-2 pb-3">Order Total: ${this.getTotalCost()}</div>
-            <CheckoutForm cart={this.state.cart} placeOrder={this.placeOrder} setView={this.setView} />
-          </div>
+          <CheckoutForm cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
         </div>
       );
     }
