@@ -59,11 +59,11 @@ export default class App extends React.Component {
     });
   }
 
-  placeOrder({ name, creditCard, shippingAdress }) {
+  placeOrder({ name, creditCard, shippingAddress }) {
     fetch('/api/orders', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, creditCard, shippingAdress })
+      headders: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, creditCard, shippingAddress })
     })
       .then(result => {
         this.setState({
@@ -135,7 +135,6 @@ export default class App extends React.Component {
             <h2 className="pt-5">My Cart</h2>
             <div className="price-description pt-2 pb-3">Order Total: ${this.getTotalCost()}</div>
             <CheckoutForm cart={this.state.cart} placeOrder={this.state.placeOrder} />
-
             <div className="row">
               <div className="back-to-catalog col-9" onClick={(name, params) => this.setView(
                 'catalog',
@@ -143,7 +142,9 @@ export default class App extends React.Component {
                 {'< Continue Shopping'}
               </div>
               <div className="col-3">
-                <button type="submit" className="btn btn-primary">Place Order</button>
+                <button type="submit" className="btn btn-primary" onClick={(name, creditCard, shippingAddress) => this.placeOrder(
+                  'catalog',
+                  {})}>Place Order</button>
               </div>
             </div>
           </div>
