@@ -16,22 +16,32 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public.products DROP CONSTRAINT products_pkey;
+ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_fk1";
+ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_fk0";
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
+ALTER TABLE ONLY public."reviewedRestaurants" DROP CONSTRAINT "reviewedRestaurants_pk";
+ALTER TABLE ONLY public.restaurants DROP CONSTRAINT "restaurants_yelpUrl_key";
+ALTER TABLE ONLY public.restaurants DROP CONSTRAINT "restaurants_yelpId_key";
+ALTER TABLE ONLY public.restaurants DROP CONSTRAINT restaurants_pk;
 ALTER TABLE ONLY public.orders DROP CONSTRAINT orders_pkey;
-ALTER TABLE ONLY public.carts DROP CONSTRAINT carts_pkey;
-ALTER TABLE ONLY public."cartItems" DROP CONSTRAINT "cartItems_pkey";
-ALTER TABLE public.products ALTER COLUMN "productId" DROP DEFAULT;
+ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_pk";
+ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
+ALTER TABLE public."reviewedRestaurants" ALTER COLUMN "userId" DROP DEFAULT;
+ALTER TABLE public."reviewedRestaurants" ALTER COLUMN "reviewedRestaurantId" DROP DEFAULT;
+ALTER TABLE public.restaurants ALTER COLUMN "restaurantId" DROP DEFAULT;
 ALTER TABLE public.orders ALTER COLUMN "orderId" DROP DEFAULT;
-ALTER TABLE public.carts ALTER COLUMN "cartId" DROP DEFAULT;
-ALTER TABLE public."cartItems" ALTER COLUMN "cartItemId" DROP DEFAULT;
-DROP SEQUENCE public."products_productId_seq";
-DROP TABLE public.products;
+ALTER TABLE public."likedRestaurants" ALTER COLUMN "userId" DROP DEFAULT;
+DROP SEQUENCE public."users_userId_seq";
+DROP TABLE public.users;
+DROP SEQUENCE public."reviewedRestaurants_userId_seq";
+DROP SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq";
+DROP TABLE public."reviewedRestaurants";
+DROP SEQUENCE public."restaurants_restaurantId_seq";
+DROP TABLE public.restaurants;
 DROP SEQUENCE public."orders_orderId_seq";
 DROP TABLE public.orders;
-DROP SEQUENCE public."carts_cartId_seq";
-DROP TABLE public.carts;
-DROP SEQUENCE public."cartItems_cartItemId_seq";
-DROP TABLE public."cartItems";
+DROP SEQUENCE public."likedRestaurants_userId_seq";
+DROP TABLE public."likedRestaurants";
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -67,22 +77,20 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: cartItems; Type: TABLE; Schema: public; Owner: -
+-- Name: likedRestaurants; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public."cartItems" (
-    "cartItemId" integer NOT NULL,
-    "cartId" integer NOT NULL,
-    "productId" integer NOT NULL,
-    price integer NOT NULL
+CREATE TABLE public."likedRestaurants" (
+    "userId" integer NOT NULL,
+    "yelpId" text NOT NULL
 );
 
 
 --
--- Name: cartItems_cartItemId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: likedRestaurants_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."cartItems_cartItemId_seq"
+CREATE SEQUENCE public."likedRestaurants_userId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -92,40 +100,10 @@ CREATE SEQUENCE public."cartItems_cartItemId_seq"
 
 
 --
--- Name: cartItems_cartItemId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: likedRestaurants_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."cartItems_cartItemId_seq" OWNED BY public."cartItems"."cartItemId";
-
-
---
--- Name: carts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.carts (
-    "cartId" integer NOT NULL,
-    "createdAt" timestamp(6) with time zone DEFAULT now() NOT NULL
-);
-
-
---
--- Name: carts_cartId_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public."carts_cartId_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: carts_cartId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public."carts_cartId_seq" OWNED BY public.carts."cartId";
+ALTER SEQUENCE public."likedRestaurants_userId_seq" OWNED BY public."likedRestaurants"."userId";
 
 
 --
@@ -163,24 +141,31 @@ ALTER SEQUENCE public."orders_orderId_seq" OWNED BY public.orders."orderId";
 
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: -
+-- Name: restaurants; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.products (
-    "productId" integer NOT NULL,
-    name text NOT NULL,
-    price integer NOT NULL,
-    image text NOT NULL,
-    "shortDescription" text NOT NULL,
-    "longDescription" text NOT NULL
+CREATE TABLE public.restaurants (
+    "restaurantId" integer NOT NULL,
+    "yelpId" text NOT NULL,
+    "restaurantName" text NOT NULL,
+    "yelpUrl" text NOT NULL,
+    "storeImageUrl" text NOT NULL,
+    distance real NOT NULL,
+    "photosUrl" json NOT NULL,
+    hours json NOT NULL,
+    location json NOT NULL,
+    categories json NOT NULL,
+    coordinates json NOT NULL,
+    reviews json NOT NULL,
+    price text NOT NULL
 );
 
 
 --
--- Name: products_productId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: restaurants_restaurantId_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."products_productId_seq"
+CREATE SEQUENCE public."restaurants_restaurantId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -190,24 +175,101 @@ CREATE SEQUENCE public."products_productId_seq"
 
 
 --
--- Name: products_productId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: restaurants_restaurantId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."products_productId_seq" OWNED BY public.products."productId";
-
-
---
--- Name: cartItems cartItemId; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."cartItems" ALTER COLUMN "cartItemId" SET DEFAULT nextval('public."cartItems_cartItemId_seq"'::regclass);
+ALTER SEQUENCE public."restaurants_restaurantId_seq" OWNED BY public.restaurants."restaurantId";
 
 
 --
--- Name: carts cartId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: reviewedRestaurants; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.carts ALTER COLUMN "cartId" SET DEFAULT nextval('public."carts_cartId_seq"'::regclass);
+CREATE TABLE public."reviewedRestaurants" (
+    "reviewedRestaurantId" integer NOT NULL,
+    "userId" integer NOT NULL,
+    "yelpId" text NOT NULL,
+    "thumbsRate" boolean,
+    note text,
+    "timeCreated" timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq" OWNED BY public."reviewedRestaurants"."reviewedRestaurantId";
+
+
+--
+-- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."reviewedRestaurants_userId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."reviewedRestaurants_userId_seq" OWNED BY public."reviewedRestaurants"."userId";
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    "userId" integer NOT NULL,
+    "distanceRadius" numeric NOT NULL
+);
+
+
+--
+-- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."users_userId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users."userId";
+
+
+--
+-- Name: likedRestaurants userId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."likedRestaurants" ALTER COLUMN "userId" SET DEFAULT nextval('public."likedRestaurants_userId_seq"'::regclass);
 
 
 --
@@ -218,27 +280,50 @@ ALTER TABLE ONLY public.orders ALTER COLUMN "orderId" SET DEFAULT nextval('publi
 
 
 --
--- Name: products productId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: restaurants restaurantId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.products ALTER COLUMN "productId" SET DEFAULT nextval('public."products_productId_seq"'::regclass);
-
-
---
--- Data for Name: cartItems; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public."cartItems" ("cartItemId", "cartId", "productId", price) FROM stdin;
-1	1	2	2595
-\.
+ALTER TABLE ONLY public.restaurants ALTER COLUMN "restaurantId" SET DEFAULT nextval('public."restaurants_restaurantId_seq"'::regclass);
 
 
 --
--- Data for Name: carts; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: reviewedRestaurants reviewedRestaurantId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-COPY public.carts ("cartId", "createdAt") FROM stdin;
-1	2020-04-05 00:21:33.677657+00
+ALTER TABLE ONLY public."reviewedRestaurants" ALTER COLUMN "reviewedRestaurantId" SET DEFAULT nextval('public."reviewedRestaurants_reviewedRestaurantId_seq"'::regclass);
+
+
+--
+-- Name: reviewedRestaurants userId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."reviewedRestaurants" ALTER COLUMN "userId" SET DEFAULT nextval('public."reviewedRestaurants_userId_seq"'::regclass);
+
+
+--
+-- Name: users userId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public."users_userId_seq"'::regclass);
+
+
+--
+-- Data for Name: likedRestaurants; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public."likedRestaurants" ("userId", "yelpId") FROM stdin;
+2	V8KXkj4sDhRlS5G6z8-79g
+1	V8KXkj4sDhRlS5G6z8-79g
+3	V8KXkj4sDhRlS5G6z8-79g
+17	1paBLJMSqiBb_grOuy9SCQ
+17	WavvLdfdP6g8aZTtbBQHTw
+17	V8KXkj4sDhRlS5G6z8-79g
+18	1paBLJMSqiBb_grOuy9SCQ
+18	V8KXkj4sDhRlS5G6z8-79g
+18	WavvLdfdP6g8aZTtbBQHTw
+19	WavvLdfdP6g8aZTtbBQHTw
+19	1paBLJMSqiBb_grOuy9SCQ
+19	V8KXkj4sDhRlS5G6z8-79g
 \.
 
 
@@ -251,61 +336,100 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 
 
 --
--- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: restaurants; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.products ("productId", name, price, image, "shortDescription", "longDescription") FROM stdin;
-1	Shake Weight	2999	/images/shake-weight.jpg	Dynamic Inertia technology ignites muscles in arms, shoulders, and chest.	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
-2	ShamWow	2595	/images/shamwow.jpg	It's like a chamois, towel, and sponge, all in one! Soaks up to 10x it's weight in any liquid!	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
-3	Snuggie	2900	/images/snuggie.jpg	Super-Soft Fleece with pockets! One Size fits all Adults! Keeps you Warm & Your Hands-Free!	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
-4	Wax Vac	999	/images/wax-vac.jpg	Gentle way to remove ear wax. Safe and hygienic. Reduces the risk of painful infections.	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
-5	Ostrich Pillow	9900	/images/ostrich-pillow.jpg	Create your own snugly space in the world and feel-good anywhere with the ultimate cocoon pillow.	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
-6	Tater Mitts	830	/images/tater-mitts.jpg	8 Seconds is all you need with Tater Mitts. Quickly and easily prepare all your favorite potato dishes with Tater Mitts.	Lorem ipsum dolor amet fashion axe pour-over jianbing, adaptogen waistcoat tacos master cleanse pitchfork next level. Thundercats pour-over chartreuse 90's. Master cleanse hot chicken ennui offal. Freegan slow-carb offal hell of. Umami polaroid wolf slow-carb next level. Gentrify cardigan seitan, kombucha tacos chambray roof party typewriter man braid. Tote bag lo-fi hell of chia fam hammock\\n.Aesthetic photo booth la croix, vaporware leggings biodiesel man braid tumeric skateboard tousled slow-carb four dollar toast synth pabst pickled. Typewriter church-key chia slow-carb vice gochujang actually. Shoreditch austin woke hot chicken, single-origin coffee ugh affogato four loko green juice. Migas iPhone four dollar toast mustache.
+COPY public.restaurants ("restaurantId", "yelpId", "restaurantName", "yelpUrl", "storeImageUrl", distance, "photosUrl", hours, location, categories, coordinates, reviews, price) FROM stdin;
+1	WavvLdfdP6g8aZTtbBQHTw	Gary Danko	https://www.yelp.com/biz/gary-danko-san-francisco?adjust_creative=wpr6gw4FnptTrk1CeT8POg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=wpr6gw4FnptTrk1CeT8POg	https://s3-media2.fl.yelpcdn.com/bphoto/CPc91bGzKBe95aM5edjhhQ/o.jpg	1000.22998	[\n"https://s3-media2.fl.yelpcdn.com/bphoto/CPc91bGzKBe95aM5edjhhQ/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/FmXn6cYO1Mm03UNO5cbOqw/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/HZVDyYaghwPl2kVbvHuHjA/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
+2	1paBLJMSqiBb_grOuy9SCQ	Honey & Butter Macarons	https://www.yelp.com/biz/honey-and-butter-macarons-irvine?adjust_creative=9xXg9BhqoCtTyu56nj7GmQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=9xXg9BhqoCtTyu56nj7GmQ	https://s3-media1.fl.yelpcdn.com/bphoto/HF8XDaVO0HOQ-QSKXBUjaw/o.jpg	1000.22998	[\n"https://s3-media1.fl.yelpcdn.com/bphoto/HF8XDaVO0HOQ-QSKXBUjaw/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/ojlRY_fdF4wHNSEp1pjH6w/o.jpg",\n"https://s3-media3.fl.yelpcdn.com/bphoto/80l_WUceSeOuqKNhjt-w-w/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
+3	V8KXkj4sDhRlS5G6z8-79g	Fukada	https://www.yelp.com/biz/fukada-irvine?adjust_creative=9xXg9BhqoCtTyu56nj7GmQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=9xXg9BhqoCtTyu56nj7GmQ	https://s3-media2.fl.yelpcdn.com/bphoto/j8TswkrypuPeKDrWb7SEEg/o.jpg	1003.22998	[\n"https://s3-media2.fl.yelpcdn.com/bphoto/j8TswkrypuPeKDrWb7SEEg/o.jpg",\n"https://s3-media1.fl.yelpcdn.com/bphoto/CrygR8VwpgiO0LbBtA7oCw/o.jpg",\n"https://s3-media1.fl.yelpcdn.com/bphoto/j1GhUVHaFSeHsqbFdhuCLQ/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
 \.
 
 
 --
--- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Data for Name: reviewedRestaurants; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 1, true);
+COPY public."reviewedRestaurants" ("reviewedRestaurantId", "userId", "yelpId", "thumbsRate", note, "timeCreated") FROM stdin;
+1	2	V8KXkj4sDhRlS5G6z8-79g	\N	\N	2020-03-21 12:00:43.258112+00
+2	1	V8KXkj4sDhRlS5G6z8-79g	\N	\N	2020-03-21 12:01:01.973009+00
+\.
 
 
 --
--- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 1, true);
+COPY public.users ("userId", "distanceRadius") FROM stdin;
+1	15
+2	10
+3	12
+5	10
+6	10
+7	10
+8	10
+9	10
+10	10
+11	10
+12	10
+13	10
+14	10
+15	10
+16	10
+17	10
+18	10
+19	10
+\.
+
+
+--
+-- Name: likedRestaurants_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."likedRestaurants_userId_seq"', 1, false);
 
 
 --
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 12, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 1, false);
 
 
 --
--- Name: products_productId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: restaurants_restaurantId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."products_productId_seq"', 1, false);
-
-
---
--- Name: cartItems cartItems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."cartItems"
-    ADD CONSTRAINT "cartItems_pkey" PRIMARY KEY ("cartItemId");
+SELECT pg_catalog.setval('public."restaurants_restaurantId_seq"', 3, true);
 
 
 --
--- Name: carts carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT carts_pkey PRIMARY KEY ("cartId");
+SELECT pg_catalog.setval('public."reviewedRestaurants_reviewedRestaurantId_seq"', 2, true);
+
+
+--
+-- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."reviewedRestaurants_userId_seq"', 1, false);
+
+
+--
+-- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."users_userId_seq"', 19, true);
+
+
+--
+-- Name: likedRestaurants likedRestaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."likedRestaurants"
+    ADD CONSTRAINT "likedRestaurants_pk" PRIMARY KEY ("userId", "yelpId");
 
 
 --
@@ -317,11 +441,59 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: restaurants restaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_pkey PRIMARY KEY ("productId");
+ALTER TABLE ONLY public.restaurants
+    ADD CONSTRAINT restaurants_pk PRIMARY KEY ("restaurantId");
+
+
+--
+-- Name: restaurants restaurants_yelpId_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.restaurants
+    ADD CONSTRAINT "restaurants_yelpId_key" UNIQUE ("yelpId");
+
+
+--
+-- Name: restaurants restaurants_yelpUrl_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.restaurants
+    ADD CONSTRAINT "restaurants_yelpUrl_key" UNIQUE ("yelpUrl");
+
+
+--
+-- Name: reviewedRestaurants reviewedRestaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."reviewedRestaurants"
+    ADD CONSTRAINT "reviewedRestaurants_pk" PRIMARY KEY ("reviewedRestaurantId");
+
+
+--
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pk PRIMARY KEY ("userId");
+
+
+--
+-- Name: likedRestaurants likedRestaurants_fk0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."likedRestaurants"
+    ADD CONSTRAINT "likedRestaurants_fk0" FOREIGN KEY ("userId") REFERENCES public.users("userId");
+
+
+--
+-- Name: likedRestaurants likedRestaurants_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."likedRestaurants"
+    ADD CONSTRAINT "likedRestaurants_fk1" FOREIGN KEY ("yelpId") REFERENCES public.restaurants("yelpId");
 
 
 --

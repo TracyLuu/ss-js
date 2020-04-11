@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class cartSummaryItem extends React.Component {
+export default class CartSummaryItem extends React.Component {
 
   createCartItems() {
     return (this.props.cart.map((cartItem, index) =>
