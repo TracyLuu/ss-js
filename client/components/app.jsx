@@ -88,31 +88,31 @@ export default class App extends React.Component {
   render() {
     if (this.state.view.name === 'catalog') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view}/>
           <ProductList setView={this.setView} view={this.state.view}/>
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'details') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view}/>
           <ProductDetails addToCart={this.addToCart} setView={this.setView} view={this.state.view}/>
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'cart') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CartSummaryItem cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} />
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'checkout') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CheckoutForm cart={this.setCart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
-        </div>
+        </>
       );
     }
   }
