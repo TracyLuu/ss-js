@@ -4,22 +4,27 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="top-border p-2 col-12 m-0">
+      <div className="bg-dark p-2 col-12 m-0">
         <div className="row m-0">
           <div className="left-side pl-5 col-10">
-            <div className="asset title"> <i className="fas fa-dollar-sign left"></i> Wicked Sales</div>
-            <div className="asset logo">
+            <div className="text-white title"> <i className="fas fa-dollar-sign left"></i> Wicked Sales</div>
+            <div className="text-white logo">
             </div>
           </div>
-          <div className="col-2 row pl-5">
-            <div className="asset number"></div>
-            <div className="asset item" onClick={(name, params) => this.props.setView('cart',
-              {})}>
-              {this.props.cart.length} Items
-              <i className="asset fas fa-shopping-cart">
+
+          <div className="row">
+            <span className="d-block p-2 text-white">
+              <div className="text-white item" onClick={(name, params) => this.props.setView('cart',
+                {})}>
+                {this.props.cart.length} Items
+              </div>
+            </span>
+            <span className="d-block p-2 bg-dark text-white">
+              <i className="text-white fas fa-shopping-cart">
               </i>
-            </div>
+            </span>
           </div>
+
         </div>
       </div>
     );

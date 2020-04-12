@@ -2,14 +2,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.asset {
-  color: white;
-}
-
-.top-border {
-  background-color: #333a40;
-}
-
 .smallImg {
   object-fit: contain;
   height: 200px;
