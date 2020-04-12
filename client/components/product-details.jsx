@@ -41,7 +41,7 @@ export default class ProductDetails extends React.Component {
               <img className="image-description col-6" src={this.state.product.image}></img>
               <div className="col-6">
                 <div className="title-description">{this.state.product.name}</div>
-                <div className="price-description">${this.state.product.price / Math.pow(10, 2)}</div>
+                <div className="price-description">${parseFloat(this.state.product.price / Math.pow(10, 2)).toFixed(2)}</div>
                 <div className="pb-3 short-description">{this.state.product.shortDescription}</div>
                 <div><button type="button" className="btn btn-primary" onClick={() => this.props.addToCart(product)}>Add to Cart</button></div>
               </div>

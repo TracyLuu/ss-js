@@ -3,7 +3,7 @@ import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummaryItem from './cart-summary-item';
-import CheckoutForm from './CheckoutForm';
+import CheckoutForm from './checkout-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -81,38 +81,38 @@ export default class App extends React.Component {
   getTotalCost() {
     const cost = this.state.cart.map(info => info.price);
     const total = cost.reduce((total, num) => total + num);
-    const totalCost = (total / Math.pow(10, 2));
+    const totalCost = parseFloat(total / Math.pow(10, 2)).toFixed(2);
     return totalCost;
   }
 
   render() {
     if (this.state.view.name === 'catalog') {
       return (
-        <div>
-          <Header cart={this.state.cart} setView={this.setView} view={this.state.view}/>
-          <ProductList setView={this.setView} view={this.state.view}/>
-        </div>
+        <>
+          <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
+          <ProductList setView={this.setView} view={this.state.view} />
+        </>
       );
     } else if (this.state.view.name === 'details') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view}/>
           <ProductDetails addToCart={this.addToCart} setView={this.setView} view={this.state.view}/>
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'cart') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CartSummaryItem cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} />
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'checkout') {
       return (
-        <div>
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CheckoutForm cart={this.setCart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
-        </div>
+        </>
       );
     }
   }

@@ -16,7 +16,7 @@ export default class ProductListItem extends React.Component {
                 </div>
                 <div className="card-body">
                   <div className="product">{product.name}</div>
-                  <div className="price">${product.price / Math.pow(10, 2)}</div>
+                  <div className="price">${parseFloat(product.price / Math.pow(10, 2)).toFixed(2)}</div>
                   <div className="description">{product.shortDescription}</div>
                 </div>
               </div>
