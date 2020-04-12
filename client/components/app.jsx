@@ -95,24 +95,24 @@ export default class App extends React.Component {
       );
     } else if (this.state.view.name === 'details') {
       return (
-        <div className="container">
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view}/>
           <ProductDetails addToCart={this.addToCart} setView={this.setView} view={this.state.view}/>
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'cart') {
       return (
-        <div className="container">
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CartSummaryItem cart={this.state.cart} setView={this.setView} getTotalCost={this.getTotalCost} />
-        </div>
+        </>
       );
     } else if (this.state.view.name === 'checkout') {
       return (
-        <div className="container">
+        <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <CheckoutForm cart={this.setCart} setView={this.setView} getTotalCost={this.getTotalCost} placeOrder={this.placeOrder}/>
-        </div>
+        </>
       );
     }
   }
