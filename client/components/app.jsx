@@ -81,22 +81,16 @@ export default class App extends React.Component {
   getTotalCost() {
     const cost = this.state.cart.map(info => info.price);
     const total = cost.reduce((total, num) => total + num);
-    const totalCost = (total / Math.pow(10, 2));
-    return parseFloat(totalCost).toFixed(2);
+    const totalCost = parseFloat(total / Math.pow(10, 2)).toFixed(2);
+    return totalCost;
   }
 
   render() {
     if (this.state.view.name === 'catalog') {
       return (
         <>
-          <div className="container col-12">
-            <div className="row">
-              <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
-            </div>
-            <div className="row">
-              <ProductList setView={this.setView} view={this.state.view} />
-            </div>
-          </div>
+          <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
+          <ProductList setView={this.setView} view={this.state.view} />
         </>
       );
     } else if (this.state.view.name === 'details') {

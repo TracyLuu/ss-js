@@ -4,8 +4,8 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="container top-border p-2 col-12">
-        <div className="row">
+      <div className="top-border p-2 col-12 m-0">
+        <div className="row m-0">
           <div className="left-side pl-5 col-10">
             <div className="asset title"> <i className="fas fa-dollar-sign left"></i> Wicked Sales</div>
             <div className="asset logo">
