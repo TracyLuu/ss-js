@@ -10,7 +10,7 @@ export default class Header extends React.Component {
             <i className="fas fa-dollar-sign pr-2">
             </i>Wicked Sales
           </div>
-          <div className="text-white logo">
+          <div className="text-white">
           </div>
         </div>
         <div className="ml-auto">
