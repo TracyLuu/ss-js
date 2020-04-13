@@ -54,3 +54,14 @@
 .description {
   font-size: .75rem;
 }
+
+.media {
+  width: 300px
+}
+
+.centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
