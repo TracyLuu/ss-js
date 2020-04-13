@@ -27,12 +27,8 @@ export default class ProductList extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="container">
-          <div className="row">
-            <ProductListItem setView={this.props.setView} view={this.props.view} products={this.state.products} />
-          </div>
-        </div>
+      <div className="centered">
+        <ProductListItem setView={this.props.setView} view={this.props.view} products={this.state.products} />
       </div>
     );
   }

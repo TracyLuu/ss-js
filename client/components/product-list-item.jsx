@@ -6,8 +6,8 @@ export default class ProductListItem extends React.Component {
     if (this.props.view.name === 'catalog') {
       return (
         this.props.products.map((product, index) =>
-          <div className="col-4" key={index}>
-            <div className="alignment card mt-2" onClick={(name, params) => this.props.setView(
+          <div className="media p-2 centered" key={index}>
+            <div className="alignment card mt-2 pt-3" onClick={(name, params) => this.props.setView(
               'details',
               { productId: product.productId })}>
               <div className="h-50">
