@@ -5,14 +5,14 @@ export default class CartSummaryItem extends React.Component {
   createCartItems() {
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
-        <div className="card mb-3 p-3 flex-row">
-          <div className="col-3">
-            <img className="smallImg card-img-top" src={cartItem.image}></img>
+        <div className="card mb-3 p-3 cart">
+          <div className="centered">
+            <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
           </div>
-          <div className="col-9">
-            <div className="product">{cartItem.name}</div>
-            <div className="price">${cartItem.price / Math.pow(10, 2)}</div>
-            <div className="description">{cartItem.shortDescription}</div>
+          <div className="p-2 d-flex row">
+            <div className="product col-12">{cartItem.name}</div>
+            <div className="text-muted col-12">${parseFloat(cartItem.price / Math.pow(10, 2)).toFixed(2)}</div>
+            <div className="description col-12">{cartItem.shortDescription}</div>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default class CartSummaryItem extends React.Component {
               {this.createCartItems()}
             </div>
             <div className="m-0 p-2 d-flex">
-              <div className="m-0 row pt-3">
+              <div className="pt-3">
                 Item Total: ${this.props.getTotalCost()}
               </div>
               <div className="ml-auto pt-2">
