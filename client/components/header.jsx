@@ -13,7 +13,7 @@ export default class Header extends React.Component {
         </div>
         <div className="ml-auto">
           <span className="d-block p-2 text-white">
-            <div className="text-white item" onClick={(name, params) => this.props.setView('cart',
+            <div className="text-white" onClick={(name, params) => this.props.setView('cart',
               {})}>
               {this.props.cart.length} Items
               <i className="text-white fas fa-shopping-cart pl-2">
