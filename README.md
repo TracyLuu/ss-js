@@ -3,7 +3,7 @@ A full stack Node.js and React shopping cart app.
 
 ## Live Demo
 
-Try the application live on [my portfolio](https://store.tracyluu.com/)
+Try the application live on https://store.tracyluu.com/
 
 ## Features
 - User can view the products for sale
