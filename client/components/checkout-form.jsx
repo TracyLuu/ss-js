@@ -86,7 +86,7 @@ export default class CheckoutForm extends React.Component {
             <div className="back-to-catalog p-3" onClick={(name, params) => this.props.setView(
               'catalog',
               {})}>
-              {'< Continue Shopping'}
+              <button className="btn btn-light">Continue Shopping</button>
             </div>
             <div className="ml-auto">
               <div className="d-block p-3">

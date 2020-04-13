@@ -23,13 +23,13 @@ export default class CartSummaryItem extends React.Component {
   render() {
     if (this.props.cart.length === 0) {
       return (
-        <div className="m-0">
-          <div className="back-to-catalog" onClick={(name, params) => this.props.setView(
+        <div className="container pt-3 justify-content-center">
+          <div className="back-to-catalog p-1" onClick={(name, params) => this.props.setView(
             'catalog',
             {})}>
-            {'< Back to Catalog'}
+            <button className="btn btn-primary">Back to Catalog</button>
           </div>
-          <h2>My Cart</h2>
+          <h2 className="p-1">My Cart</h2>
           <div>There are no items in your cart.</div>
         </div>
       );
@@ -38,10 +38,12 @@ export default class CartSummaryItem extends React.Component {
         <>
           <div className="m-0 p-2">
             <div className="p-2">
-              <div className="back-to-catalog" onClick={(name, params) => this.props.setView(
+              <div className="back-to-catalog pb-1" onClick={(name, params) => this.props.setView(
                 'catalog',
                 {})}>
-                {'< Back to Catalog'}
+                <button className="btn btn-light">
+                  Back to Catalog
+                </button>
               </div>
               <h2>My Cart</h2>
             </div>
