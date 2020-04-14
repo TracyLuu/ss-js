@@ -4,7 +4,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="bg-dark m-0 d-flex">
+      <div className="bg-info m-0 d-flex">
         <div className="row m-0 p-2">
           <div className="text-white">
             <i className="fas fa-sun pr-2">

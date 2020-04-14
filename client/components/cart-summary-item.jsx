@@ -27,7 +27,7 @@ export default class CartSummaryItem extends React.Component {
           <div className="back-to-catalog p-1" onClick={(name, params) => this.props.setView(
             'catalog',
             {})}>
-            <button className="btn btn-primary">Back to Catalog</button>
+            <button className="btn btn-info">Back to Catalog</button>
           </div>
           <h2 className="p-1">My Cart</h2>
           <div>There are no items in your cart.</div>
@@ -41,7 +41,7 @@ export default class CartSummaryItem extends React.Component {
               <div className="back-to-catalog pb-1" onClick={(name, params) => this.props.setView(
                 'catalog',
                 {})}>
-                <button className="btn btn-light">
+                <button className="btn btn-outline-info">
                   Back to Catalog
                 </button>
               </div>
@@ -55,7 +55,7 @@ export default class CartSummaryItem extends React.Component {
                 Item Total: ${this.props.getTotalCost()}
               </div>
               <div className="ml-auto pt-2">
-                <button className="btn btn-primary" onClick={(name, params) => this.props.setView(
+                <button className="btn btn-info" onClick={(name, params) => this.props.setView(
                   'checkout',
                   {})}>
                   Checkout
