@@ -32,7 +32,7 @@ In progress ...
 ## System Requirements
 
 - Node.js 10 or higher
-- NPM 6 or higher
+- npm 6 or higher
 - PostgreSQL 6 or higher
 
 #### Getting Started
@@ -40,15 +40,15 @@ In progress ...
 1. Clone the repository.
 
 ```shell
-git clone https://github.com/tracyluu/wicked-sales-js.git
+git clone https://github.com/tracyluu/ss-js.git
 ```
 
 2. Change directory to cloned folder
 ```shell
-cd wicked-sales-js/
+cd ss-js/
 ```
 
-3. Install all dependencies with NPM.
+3. Install all dependencies with npm.
 ```shell
 npm install
 ```
@@ -58,25 +58,15 @@ npm install
 sudo service postgresql start
 ```
 
-5. Create the database
-```shell
-createdb wickedSales
-```
-
-6. Import the example database to PostgreSQL
+5. Import the example database to PostgreSQL
 ```shell
 npm db:import
 ```
 
-7. Access the wickedSales Postgresql database server using pgweb in your default web browser
-```shell
-pgweb --db=wickedSales
-```
-
-8. Start the project.
+6. Start the project.
 
 ```shell
 npm run dev
 ```
 
-9. Once started, you can view the application by opening [https://localhost:3000](https://localhost:3000)
+7. Once started, you can view the application by opening [https://localhost:3000](https://localhost:3000)
