@@ -1,9 +1,20 @@
-# wicked-sales-js
-A full stack Node.js and React shopping cart app.
+# SS-js
+A full stack Node.js and React e-commerce experience with sunscreen products.
+
+## Technologies Used
+- React.js
+- Express.js
+- Node.js
+- npm
+- Webpack 4
+- Bootstrap 4
+- PostgreSQL
+- HTML5
+- CSS3
 
 ## Live Demo
 
-Try the application live on https://store.tracyluu.com/
+https://store.tracyluu.com/
 
 ## Features
 - User can view the products for sale
@@ -11,7 +22,7 @@ Try the application live on https://store.tracyluu.com/
 - User can add a product to their cart
 - User can add a product to their cart
 - User can view their cart summary
-- User can place an order
+- User can place an order (as long as form is valid)
 - Mobile Responsiveness
 
 ## Preview
