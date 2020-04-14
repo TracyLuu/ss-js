@@ -146,11 +146,18 @@
   }
 }
 
-.shadow {
-  	-webkit-box-shadow: 0 8px 6px -6px #65afa3;
+
+/* Research more inner glows */
+/* .shadow { */
+  /* Tried to use animista for bottom shadow on banner */
+	/* -webkit-animation: shadow-inset-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+          animation: shadow-inset-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; */
+
+          /* Used box shadow to try to make inner glow... but its not inner glow */
+  	/* -webkit-box-shadow: 0 8px 6px -6px #65afa3;
 	   -moz-box-shadow: 0 8px 6px -6px #65afa3;
-	        box-shadow: 0 8px 6px -6px #65afa3;
-}
+	        box-shadow: 0 8px 6px -6px #65afa3; */
+/* } */
 
 .contain {
   width: 100%
