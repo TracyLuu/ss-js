@@ -27,7 +27,7 @@ https://store.tracyluu.com/
 
 ## Preview
 
-In progress ...
+![](./server/public/images/041420.png)
 
 ## System Requirements
 
