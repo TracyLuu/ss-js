@@ -16,32 +16,22 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_fk1";
-ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_fk0";
-ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
-ALTER TABLE ONLY public."reviewedRestaurants" DROP CONSTRAINT "reviewedRestaurants_pk";
-ALTER TABLE ONLY public.restaurants DROP CONSTRAINT "restaurants_yelpUrl_key";
-ALTER TABLE ONLY public.restaurants DROP CONSTRAINT "restaurants_yelpId_key";
-ALTER TABLE ONLY public.restaurants DROP CONSTRAINT restaurants_pk;
+ALTER TABLE ONLY public.products DROP CONSTRAINT products_pkey;
 ALTER TABLE ONLY public.orders DROP CONSTRAINT orders_pkey;
-ALTER TABLE ONLY public."likedRestaurants" DROP CONSTRAINT "likedRestaurants_pk";
-ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
-ALTER TABLE public."reviewedRestaurants" ALTER COLUMN "userId" DROP DEFAULT;
-ALTER TABLE public."reviewedRestaurants" ALTER COLUMN "reviewedRestaurantId" DROP DEFAULT;
-ALTER TABLE public.restaurants ALTER COLUMN "restaurantId" DROP DEFAULT;
+ALTER TABLE ONLY public.carts DROP CONSTRAINT carts_pkey;
+ALTER TABLE ONLY public."cartItems" DROP CONSTRAINT "cartItems_pkey";
+ALTER TABLE public.products ALTER COLUMN "productId" DROP DEFAULT;
 ALTER TABLE public.orders ALTER COLUMN "orderId" DROP DEFAULT;
-ALTER TABLE public."likedRestaurants" ALTER COLUMN "userId" DROP DEFAULT;
-DROP SEQUENCE public."users_userId_seq";
-DROP TABLE public.users;
-DROP SEQUENCE public."reviewedRestaurants_userId_seq";
-DROP SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq";
-DROP TABLE public."reviewedRestaurants";
-DROP SEQUENCE public."restaurants_restaurantId_seq";
-DROP TABLE public.restaurants;
+ALTER TABLE public.carts ALTER COLUMN "cartId" DROP DEFAULT;
+ALTER TABLE public."cartItems" ALTER COLUMN "cartItemId" DROP DEFAULT;
+DROP SEQUENCE public."products_productId_seq";
+DROP TABLE public.products;
 DROP SEQUENCE public."orders_orderId_seq";
 DROP TABLE public.orders;
-DROP SEQUENCE public."likedRestaurants_userId_seq";
-DROP TABLE public."likedRestaurants";
+DROP SEQUENCE public."carts_cartId_seq";
+DROP TABLE public.carts;
+DROP SEQUENCE public."cartItems_cartItemId_seq";
+DROP TABLE public."cartItems";
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -77,20 +67,22 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: likedRestaurants; Type: TABLE; Schema: public; Owner: -
+-- Name: cartItems; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public."likedRestaurants" (
-    "userId" integer NOT NULL,
-    "yelpId" text NOT NULL
+CREATE TABLE public."cartItems" (
+    "cartItemId" integer NOT NULL,
+    "cartId" integer NOT NULL,
+    "productId" integer NOT NULL,
+    price integer NOT NULL
 );
 
 
 --
--- Name: likedRestaurants_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: cartItems_cartItemId_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."likedRestaurants_userId_seq"
+CREATE SEQUENCE public."cartItems_cartItemId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -100,10 +92,40 @@ CREATE SEQUENCE public."likedRestaurants_userId_seq"
 
 
 --
--- Name: likedRestaurants_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: cartItems_cartItemId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."likedRestaurants_userId_seq" OWNED BY public."likedRestaurants"."userId";
+ALTER SEQUENCE public."cartItems_cartItemId_seq" OWNED BY public."cartItems"."cartItemId";
+
+
+--
+-- Name: carts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.carts (
+    "cartId" integer NOT NULL,
+    "createdAt" timestamp(6) with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: carts_cartId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."carts_cartId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: carts_cartId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."carts_cartId_seq" OWNED BY public.carts."cartId";
 
 
 --
@@ -141,31 +163,24 @@ ALTER SEQUENCE public."orders_orderId_seq" OWNED BY public.orders."orderId";
 
 
 --
--- Name: restaurants; Type: TABLE; Schema: public; Owner: -
+-- Name: products; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.restaurants (
-    "restaurantId" integer NOT NULL,
-    "yelpId" text NOT NULL,
-    "restaurantName" text NOT NULL,
-    "yelpUrl" text NOT NULL,
-    "storeImageUrl" text NOT NULL,
-    distance real NOT NULL,
-    "photosUrl" json NOT NULL,
-    hours json NOT NULL,
-    location json NOT NULL,
-    categories json NOT NULL,
-    coordinates json NOT NULL,
-    reviews json NOT NULL,
-    price text NOT NULL
+CREATE TABLE public.products (
+    "productId" integer NOT NULL,
+    name text NOT NULL,
+    price integer NOT NULL,
+    image text NOT NULL,
+    "shortDescription" text NOT NULL,
+    "longDescription" text NOT NULL
 );
 
 
 --
--- Name: restaurants_restaurantId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: products_productId_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."restaurants_restaurantId_seq"
+CREATE SEQUENCE public."products_productId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -175,101 +190,24 @@ CREATE SEQUENCE public."restaurants_restaurantId_seq"
 
 
 --
--- Name: restaurants_restaurantId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: products_productId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."restaurants_restaurantId_seq" OWNED BY public.restaurants."restaurantId";
-
-
---
--- Name: reviewedRestaurants; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."reviewedRestaurants" (
-    "reviewedRestaurantId" integer NOT NULL,
-    "userId" integer NOT NULL,
-    "yelpId" text NOT NULL,
-    "thumbsRate" boolean,
-    note text,
-    "timeCreated" timestamp with time zone NOT NULL
-);
+ALTER SEQUENCE public."products_productId_seq" OWNED BY public.products."productId";
 
 
 --
--- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: cartItems cartItemId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE ONLY public."cartItems" ALTER COLUMN "cartItemId" SET DEFAULT nextval('public."cartItems_cartItemId_seq"'::regclass);
 
 
 --
--- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: carts cartId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."reviewedRestaurants_reviewedRestaurantId_seq" OWNED BY public."reviewedRestaurants"."reviewedRestaurantId";
-
-
---
--- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public."reviewedRestaurants_userId_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public."reviewedRestaurants_userId_seq" OWNED BY public."reviewedRestaurants"."userId";
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users (
-    "userId" integer NOT NULL,
-    "distanceRadius" numeric NOT NULL
-);
-
-
---
--- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public."users_userId_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users."userId";
-
-
---
--- Name: likedRestaurants userId; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."likedRestaurants" ALTER COLUMN "userId" SET DEFAULT nextval('public."likedRestaurants_userId_seq"'::regclass);
+ALTER TABLE ONLY public.carts ALTER COLUMN "cartId" SET DEFAULT nextval('public."carts_cartId_seq"'::regclass);
 
 
 --
@@ -280,50 +218,65 @@ ALTER TABLE ONLY public.orders ALTER COLUMN "orderId" SET DEFAULT nextval('publi
 
 
 --
--- Name: restaurants restaurantId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: products productId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.restaurants ALTER COLUMN "restaurantId" SET DEFAULT nextval('public."restaurants_restaurantId_seq"'::regclass);
-
-
---
--- Name: reviewedRestaurants reviewedRestaurantId; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."reviewedRestaurants" ALTER COLUMN "reviewedRestaurantId" SET DEFAULT nextval('public."reviewedRestaurants_reviewedRestaurantId_seq"'::regclass);
+ALTER TABLE ONLY public.products ALTER COLUMN "productId" SET DEFAULT nextval('public."products_productId_seq"'::regclass);
 
 
 --
--- Name: reviewedRestaurants userId; Type: DEFAULT; Schema: public; Owner: -
+-- Data for Name: cartItems; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."reviewedRestaurants" ALTER COLUMN "userId" SET DEFAULT nextval('public."reviewedRestaurants_userId_seq"'::regclass);
+COPY public."cartItems" ("cartItemId", "cartId", "productId", price) FROM stdin;
+1	1	2	2595
+2	1	3	2900
+3	1	1	2999
+4	1	5	9900
+5	1	5	9900
+6	2	3	2900
+7	2	1	2999
+8	3	1	2999
+9	4	6	830
+10	4	6	830
+11	4	6	830
+12	4	6	830
+13	4	6	830
+14	5	2	2595
+15	5	3	2900
+16	6	2	2595
+17	6	3	2900
+18	6	2	2595
+19	6	3	2900
+20	6	4	999
+21	7	1	2999
+22	7	5	9900
+23	8	3	2900
+24	8	1	2999
+25	9	2	2595
+26	9	6	830
+27	10	1	2999
+28	10	4	999
+29	11	3	2900
+\.
 
 
 --
--- Name: users userId; Type: DEFAULT; Schema: public; Owner: -
+-- Data for Name: carts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public."users_userId_seq"'::regclass);
-
-
---
--- Data for Name: likedRestaurants; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public."likedRestaurants" ("userId", "yelpId") FROM stdin;
-2	V8KXkj4sDhRlS5G6z8-79g
-1	V8KXkj4sDhRlS5G6z8-79g
-3	V8KXkj4sDhRlS5G6z8-79g
-17	1paBLJMSqiBb_grOuy9SCQ
-17	WavvLdfdP6g8aZTtbBQHTw
-17	V8KXkj4sDhRlS5G6z8-79g
-18	1paBLJMSqiBb_grOuy9SCQ
-18	V8KXkj4sDhRlS5G6z8-79g
-18	WavvLdfdP6g8aZTtbBQHTw
-19	WavvLdfdP6g8aZTtbBQHTw
-19	1paBLJMSqiBb_grOuy9SCQ
-19	V8KXkj4sDhRlS5G6z8-79g
+COPY public.carts ("cartId", "createdAt") FROM stdin;
+1	2020-04-05 00:21:33.677657+00
+2	2020-04-05 00:48:06.12372+00
+3	2020-04-05 00:55:58.262491+00
+4	2020-04-05 00:58:26.804053+00
+5	2020-04-06 20:55:13.128398+00
+6	2020-04-07 23:27:58.575513+00
+7	2020-04-12 06:02:04.303937+00
+8	2020-04-12 20:47:42.199134+00
+9	2020-04-13 02:26:31.987069+00
+10	2020-04-13 10:16:17.142688+00
+11	2020-04-14 10:05:44.331779+00
 \.
 
 
@@ -332,104 +285,85 @@ COPY public."likedRestaurants" ("userId", "yelpId") FROM stdin;
 --
 
 COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", "createdAt") FROM stdin;
+24	4	tracy	11111	12345 irvine	2020-04-05 01:08:22.604395+00
+25	4	tracy	11111	12345 irvine	2020-04-05 01:09:07.532567+00
+26	4	tracy	11111	12345 irvine	2020-04-05 01:09:21.267069+00
+27	4	tracy	11111	12345 irvine	2020-04-05 02:05:05.545364+00
+28	4	tracy	11111	12345 irvine	2020-04-05 02:09:20.21111+00
+29	4	tracy	11111	12345 irvine	2020-04-05 02:12:00.36138+00
+48	6	Tracy	123	123	2020-04-08 09:06:04.772263+00
+49	6	Tracy	123	123	2020-04-08 09:08:17.057617+00
+50	6	Tracy	000 00 000	123 Happy Lane	2020-04-08 09:10:33.674624+00
+51	6	Tracy	000 00 000	123 Happy Lane	2020-04-08 09:12:38.773268+00
+52	6	Tracy	0000 000 0000	123 Happy Lane	2020-04-08 09:15:42.276404+00
+53	6	Tracy	0000 000 0000	123 Happy Feet	2020-04-08 09:37:43.237867+00
+54	6	Tracy	0000 00 0000	123 Shipping	2020-04-08 09:39:37.485383+00
+55	6	Tracy	0000 000 0000	123 Shipping	2020-04-08 10:12:31.265636+00
+56	6	Tracy	0000 000 0000	123 Happy St	2020-04-08 10:20:29.616152+00
+57	6	Tracy	0000 000 0000	123 Happy Lane	2020-04-08 10:22:52.470222+00
+59	8	Tracy	0000 0000 0000 0000	123 Happy Lane	2020-04-13 02:24:48.457733+00
+60	9	Tracy	0000 0000 0000 0000	123 Testing St	2020-04-13 09:57:22.710818+00
+61	10	Tracy	0000 0000 0000 0000	123 Whatever Lane	2020-04-13 10:24:13.938349+00
+62	10	Tracy	000000000000000000	3425678dsfgh	2020-04-13 10:25:20.844102+00
 \.
 
 
 --
--- Data for Name: restaurants; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.restaurants ("restaurantId", "yelpId", "restaurantName", "yelpUrl", "storeImageUrl", distance, "photosUrl", hours, location, categories, coordinates, reviews, price) FROM stdin;
-1	WavvLdfdP6g8aZTtbBQHTw	Gary Danko	https://www.yelp.com/biz/gary-danko-san-francisco?adjust_creative=wpr6gw4FnptTrk1CeT8POg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=wpr6gw4FnptTrk1CeT8POg	https://s3-media2.fl.yelpcdn.com/bphoto/CPc91bGzKBe95aM5edjhhQ/o.jpg	1000.22998	[\n"https://s3-media2.fl.yelpcdn.com/bphoto/CPc91bGzKBe95aM5edjhhQ/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/FmXn6cYO1Mm03UNO5cbOqw/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/HZVDyYaghwPl2kVbvHuHjA/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
-2	1paBLJMSqiBb_grOuy9SCQ	Honey & Butter Macarons	https://www.yelp.com/biz/honey-and-butter-macarons-irvine?adjust_creative=9xXg9BhqoCtTyu56nj7GmQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=9xXg9BhqoCtTyu56nj7GmQ	https://s3-media1.fl.yelpcdn.com/bphoto/HF8XDaVO0HOQ-QSKXBUjaw/o.jpg	1000.22998	[\n"https://s3-media1.fl.yelpcdn.com/bphoto/HF8XDaVO0HOQ-QSKXBUjaw/o.jpg",\n"https://s3-media4.fl.yelpcdn.com/bphoto/ojlRY_fdF4wHNSEp1pjH6w/o.jpg",\n"https://s3-media3.fl.yelpcdn.com/bphoto/80l_WUceSeOuqKNhjt-w-w/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
-3	V8KXkj4sDhRlS5G6z8-79g	Fukada	https://www.yelp.com/biz/fukada-irvine?adjust_creative=9xXg9BhqoCtTyu56nj7GmQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=9xXg9BhqoCtTyu56nj7GmQ	https://s3-media2.fl.yelpcdn.com/bphoto/j8TswkrypuPeKDrWb7SEEg/o.jpg	1003.22998	[\n"https://s3-media2.fl.yelpcdn.com/bphoto/j8TswkrypuPeKDrWb7SEEg/o.jpg",\n"https://s3-media1.fl.yelpcdn.com/bphoto/CrygR8VwpgiO0LbBtA7oCw/o.jpg",\n"https://s3-media1.fl.yelpcdn.com/bphoto/j1GhUVHaFSeHsqbFdhuCLQ/o.jpg"\n]	[\n{\n"open": [\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 0\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 1\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 2\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 3\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 4\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 5\n},\n{\n"is_overnight": false,\n"start": "1730",\n"end": "2200",\n"day": 6\n}\n],\n"hours_type": "REGULAR",\n"is_open_now": false\n}\n]	{\n"address1": "800 N Point St",\n"address2": "",\n"address3": "",\n"city": "San Francisco",\n"zip_code": "94109",\n"country": "US",\n"state": "CA",\n"display_address": [\n"800 N Point St",\n"San Francisco, CA 94109"\n],\n"cross_streets": ""\n}	[\n{\n"alias": "newamerican",\n"title": "American (New)"\n},\n{\n"alias": "french",\n"title": "French"\n},\n{\n"alias": "wine_bars",\n"title": "Wine Bars"\n}\n]	{\n"latitude": 37.80587,\n"longitude": -122.42058\n}	[\n{\n"id": "xAG4O7l-t1ubbwVAlPnDKg",\n"rating": 5,\n"user": {\n"id": "W8UK02IDdRS2GL_66fuq6w",\n"profile_url": "https://www.yelp.com/user_details?userid=W8UK02IDdRS2GL_66fuq6w",\n"image_url": "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg",\n"name": "Ella A."\n},\n"text": "Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier...",\n"time_created": "2016-08-29 00:41:13",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=hp8hAJ-AnlpqxCCu7kyCWA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "1JNmYjJXr9ZbsfZUAgkeXQ",\n"rating": 4,\n"user": {\n"id": "rk-MwIUejOj6LWFkBwZ98Q",\n"profile_url": "https://www.yelp.com/user_details?userid=rk-MwIUejOj6LWFkBwZ98Q",\n"image_url": null,\n"name": "Yanni L."\n},\n"text": "The \\"restaurant\\" is inside a small deli so there is no sit down area. Just grab and go.\\n\\nInside, they sell individually packaged ingredients so that you can...",\n"time_created": "2016-09-28 08:55:29",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=fj87uymFDJbq0Cy5hXTHIA&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n},\n{\n"id": "SIoiwwVRH6R2s2ipFfs4Ww",\n"rating": 4,\n"user": {\n"id": "rpOyqD_893cqmDAtJLbdog",\n"profile_url": "https://www.yelp.com/user_details?userid=rpOyqD_893cqmDAtJLbdog",\n"image_url": null,\n"name": "Suavecito M."\n},\n"text": "Dear Mission District,\\n\\nI miss you and your many delicious late night food establishments and vibrant atmosphere.  I miss the way you sound and smell on a...",\n"time_created": "2016-08-10 07:56:44",\n"url": "https://www.yelp.com/biz/la-palma-mexicatessen-san-francisco?hrid=m_tnQox9jqWeIrU87sN-IQ&adjust_creative=0sidDfoTIHle5vvHEBvF0w&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=0sidDfoTIHle5vvHEBvF0w"\n}\n]	$$$
+COPY public.products ("productId", name, price, image, "shortDescription", "longDescription") FROM stdin;
+1	Nivea Sun Protect	1420	/images/nivea-sunscreen.jpg	UV gel that feels like skin lotion and spreads like water on your skin. Gentle on skin, and will not leave white residue.	Ingredients: Water, Ethylhexyl Methoxycinnamate, Ethanol, PG, Dimethicone, Ethylhexyl Triazone, Hexyl Diethylaminohydroxybenzoylbenzoate, BG, Lysine Dilauroyl Glutamate Na, Quince Seed Extract, Beet Wax Extract, Kihaeda Bark Extract, Hydrolyzed Hyaluronic Acid, (Acrylates / Alkyl Acrylate (C 10 - 30)) Crosspolymer, Carbomer, Tocopherol Acetate, Sodium Hydroxide, BHT, Methylparaben
+2	Skin Aqua Tone Up	1999	/images/skin-aqua.jpg	Cosme award winning sunscreen (2018, 2019). SPF50+ PA++++ A lavender shade UV essence for clear, dewy skin.	Ingredients: Water, Alcohol, Ethylhexyl Methoxycinnamate, Butylene Glycol, Diphenylsiloxy Phenyl Trimethicone, Titanium Dioxide, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Sodium Hyaluronate, Magnesium Ascorbyl Phosphate, Passiflora Edulis Fruit Extract, Hydrolyzed Prunus Domestica, Rosa Roxburghii Fruit Extract, Bis-PEG-18 Methyl Ether Dimethyl Silane, Methyl Methacrylate/Glycol Dimethacrylate Crosspolymer, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Acrylates Copolymer, Polysorbate 60, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Triethanolamine, Ammonium Acryloyldimethyltaurate/VP Copolymer, Silica, PEG-12 Dimethicone, Polystyrene, Polyvinyl Alcohol, Disodium EDTA, Xantham Gum, Alumina, Butylated Hydroxytoluene, Polyglyceryl-2 Triisostearate, Synthetic Fluorphlogopite, Tin Oxide, CI 73360, CI 42090, Fragrance
+3	Biore Aqua Rich	1499	/images/biore-aqua-rich.jpg	Light skin feel, absorbs quickly, leaves no white cast. Infused with Hyaluronic Acid & Royal Jelly Extract.	Water, Alcohol, Ethylhexyl Methoxycinnamate, Ethylhexyl Triazone, Isopropyl Palmitate, Lauryl Methacrylate/​Sodium Methacrylate Crosspolymer, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Hydrogenated Polyisobutene, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Dextrin Palmitate, Butylene Glycol, Xylitol, Acrylates/​C10-30 Alkyl Acrylate Crosspolymer, Dimethicone, C12-15 Alkyl Benzoate, Glycerin, Propanediol, Glyceryl Stearate, Glyceryl Behenate, Vinyl Dimethicone/​Methicone Silsesquioxane Crosspolymer, Potassium Hydroxide, Cetyl Alcohol, Agar, Sorbitan Distearate, Isoceteth-20, Polyvinyl Alcohol, Dimethicone/​Vinyl Dimethicone Crosspolymer, Stearoyl Glutamic Acid, Arginine, Disodium EDTA, Fragrance, BHT, Sodium Hydroxide, Tocopherol, Royal Jelly Extract, Sodium Hyaluronate, Phenoxyethanol, Methylparaben
+4	Krave Sun Fluid	2000	/images/krave.jpg	A gentle, antioxidant-rich day fluid that protects your skin from harsh environmental stressors.	Ingredients: Water, Butyloctyl Salicylate, Dibutyl Adipate, Beta Vulgaris (Beet) Root Extract, Alcohol, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Triazone, Glycerin,  Pentylene Glycol, Isoamyl p-Methoxycinnamate, Polysilicone-15, Inulin Lauryl Carbamate, Methyl Methacrylate Crosspolymer, Sodium Acrylate/Sodium Acryloyldimethyl Taurate Copolymer, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Tromethamine, Methylpropanediol, Isohexadecane, Caprylyl Glycol, Glyceryl Caprylate, Polymethylsilsesquioxane, 1,2-Hexanediol, Polysorbate 80, Lithospermum Erythrorhizon Root Extract, Macadamia Ternifolia Seed Oil, Sorbitan Oleate, Ethylhexylglycerin, Allantoin, Epigallocatechin Gallate, Sodium Ascorbyl Phosphate, Butylene Glycol, Resveratrol
+5	Make P:rem Sun Fluid	3350	/images/make-prem-sun-fluid.png	This sun fluid, a 100% reflective sunscreen for body and face, contains mineral filter that blocks out UVA and UVB simulataneously.	Ingredients: Water, Cyclomethicone, Zinc Oxide (CI 77947), Propanediol, Titanium Dioxide (CI 77891), Dicaprylyl Carbonate, Polyglyceryl-3 Polydimethylsiloxyethyl Dimethicone, Cetyl Ethylhexanoate, 1,2-Hexanediol, Disteardimonium Hectorite, Magnesium Sulfate, Salvia Hispanica (Chia) Seed Extract, Centella Asiatica (Gotu Kola) Extract, Houttuynia Cordata Extract, Hydrogen Dimethicone, Aluminum Hydroxide, Polyglyceryl-2 Dipolyhydroxystearate, Stearic Acid, Dimethicone Crosspolymer, Phenyl Trimethicone, Fructooligosaccharides, Saccharide Hydrolysate, Pullulan, Citrus Aurantium Bergamia (Bergamot) Fruit Oil, Ethylhexylglycerin, Octyldodecanol, Salvia Officinalis (Sage) Oil, Betula Platyphylla Japonica Juice, Dipropylene Glycol, Echium Plantagineum Seed Oil, Xylitylglucoside, Sodium Palmitoyl Proline, Rubus Arcticus Callus Extract, Anhydroxylitol, Xylitol, Nymphaea Alba (White Water Lily) Flower Extract, Butylene Glycol, Cardiospermum Halicacabum Flower/Leaf/Vine Extract, Helianthus Annuus (Sunflower) Seed Oil Unsaponifiables, Glucose, Tocopherol, Sodium Hyaluronate
+6	Make P:rem Sun Gel	3150	/images/make-prem-sun-gel.png	Lightweight broad spectrum SPF 50+ PA++++ UVA/UVB protection while cooling down skin's temperature.	Ingredients: Water, Ethylhexyl Methoxycinnamate, Homosalate, Ethylhexyl Salicylate, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Propanediol, Niacinamide, Dimethicone Crosspolymer, Pentylene Glycol, Salvia Hispanica Seed Extract, Centella Asiatica Extract, Houttuynia Cordata Extract, Ammonium Acryloyldimethyltaurate/VP Copolymer, Fragrance, Glyceryl Caprylate, Fructooligosaccharides, Saccharide Hydrolysate, Ethylhexylglycerin, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Tromethamine, Pullulan, Adenosine, 1,2-Hexanediol, Betula Alba Juice, Dipropylene Glycol, Butylene Glycol, Xylitylglucoside, Sodium Palmitoyl Proline, Rubus Arcticus Callus Extract, Anhydroxylitol, Xylitol, Nymphaea Alba Flower Extract, Glycerin, Chamaecyparis Obtusa Leaf Extract, Glucose, Polyglyceryl-10 Oleate, Alcohol, Lecithin, Sodium Dilauramidoglutamide Lysine, Thermus Thermophillus Ferment, Phytosterols, Hydrogenated Lecithin, Lysolecithin, Sodium Ascorbyl Phosphate, Ascophyllum Nodosum Extract, Sodium Hyaluronate, Leuconostoc/Radish Root Ferment Filtrate, Potassium Sorbate, Disodium EDTA, Citric Acid
 \.
 
 
 --
--- Data for Name: reviewedRestaurants; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-COPY public."reviewedRestaurants" ("reviewedRestaurantId", "userId", "yelpId", "thumbsRate", note, "timeCreated") FROM stdin;
-1	2	V8KXkj4sDhRlS5G6z8-79g	\N	\N	2020-03-21 12:00:43.258112+00
-2	1	V8KXkj4sDhRlS5G6z8-79g	\N	\N	2020-03-21 12:01:01.973009+00
-\.
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 29, true);
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-COPY public.users ("userId", "distanceRadius") FROM stdin;
-1	15
-2	10
-3	12
-5	10
-6	10
-7	10
-8	10
-9	10
-10	10
-11	10
-12	10
-13	10
-14	10
-15	10
-16	10
-17	10
-18	10
-19	10
-\.
-
-
---
--- Name: likedRestaurants_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public."likedRestaurants_userId_seq"', 1, false);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 11, true);
 
 
 --
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 1, false);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 62, true);
 
 
 --
--- Name: restaurants_restaurantId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: products_productId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."restaurants_restaurantId_seq"', 3, true);
-
-
---
--- Name: reviewedRestaurants_reviewedRestaurantId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public."reviewedRestaurants_reviewedRestaurantId_seq"', 2, true);
+SELECT pg_catalog.setval('public."products_productId_seq"', 1, false);
 
 
 --
--- Name: reviewedRestaurants_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: cartItems cartItems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."reviewedRestaurants_userId_seq"', 1, false);
-
-
---
--- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public."users_userId_seq"', 19, true);
+ALTER TABLE ONLY public."cartItems"
+    ADD CONSTRAINT "cartItems_pkey" PRIMARY KEY ("cartItemId");
 
 
 --
--- Name: likedRestaurants likedRestaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: carts carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."likedRestaurants"
-    ADD CONSTRAINT "likedRestaurants_pk" PRIMARY KEY ("userId", "yelpId");
+ALTER TABLE ONLY public.carts
+    ADD CONSTRAINT carts_pkey PRIMARY KEY ("cartId");
 
 
 --
@@ -441,59 +375,11 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: restaurants restaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.restaurants
-    ADD CONSTRAINT restaurants_pk PRIMARY KEY ("restaurantId");
-
-
---
--- Name: restaurants restaurants_yelpId_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.restaurants
-    ADD CONSTRAINT "restaurants_yelpId_key" UNIQUE ("yelpId");
-
-
---
--- Name: restaurants restaurants_yelpUrl_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.restaurants
-    ADD CONSTRAINT "restaurants_yelpUrl_key" UNIQUE ("yelpUrl");
-
-
---
--- Name: reviewedRestaurants reviewedRestaurants_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."reviewedRestaurants"
-    ADD CONSTRAINT "reviewedRestaurants_pk" PRIMARY KEY ("reviewedRestaurantId");
-
-
---
--- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pk PRIMARY KEY ("userId");
-
-
---
--- Name: likedRestaurants likedRestaurants_fk0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."likedRestaurants"
-    ADD CONSTRAINT "likedRestaurants_fk0" FOREIGN KEY ("userId") REFERENCES public.users("userId");
-
-
---
--- Name: likedRestaurants likedRestaurants_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."likedRestaurants"
-    ADD CONSTRAINT "likedRestaurants_fk1" FOREIGN KEY ("yelpId") REFERENCES public.restaurants("yelpId");
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY ("productId");
 
 
 --
