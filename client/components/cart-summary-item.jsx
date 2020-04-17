@@ -47,7 +47,7 @@ export default class CartSummaryItem extends React.Component {
               </div>
               <h2>My Cart</h2>
             </div>
-            <div>
+            <div className="text-center">
               {this.createCartItems()}
             </div>
             <div className="m-0 p-2 d-flex">
