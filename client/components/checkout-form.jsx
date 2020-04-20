@@ -44,7 +44,7 @@ export default class CheckoutForm extends React.Component {
     if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
       button = <div className="col my-4 mb-5">
         <button type="submit" className="btn btn-primary float-right mr-5"
-          onClick={this.handleSubmit}>
+          onClick={this.handleSubmit(event)}>
           Order
         </button>
       </div>;
