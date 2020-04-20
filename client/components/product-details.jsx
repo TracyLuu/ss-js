@@ -26,8 +26,8 @@ export default class ProductDetails extends React.Component {
     const product = this.state.product;
     if (this.state.product === null) {
       return (
-        <div>
-          Loading...
+        <div className="spinner-grow text-info" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
       );
     } else {
