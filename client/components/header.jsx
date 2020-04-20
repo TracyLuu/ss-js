@@ -15,7 +15,7 @@ export default class Header extends React.Component {
           <div className="text-white" onClick={(name, params) => this.props.setView('cart',
             {})}>
             <div id="bag">
-              <span className="p1 fa-stack fa-2x has-badge" data-count={this.props.cart.length}>
+              <span className="p1 fa-stack fa-2x has-badge click" data-count={this.props.cart.length}>
                 <i className="p1 fas fa-shopping-bag fa-stack-1x xfa-inverse" data-count={this.props.cart.length}></i>
               </span>
             </div>
