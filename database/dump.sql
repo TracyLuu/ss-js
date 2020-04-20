@@ -258,6 +258,24 @@ COPY public."cartItems" ("cartItemId", "cartId", "productId", price) FROM stdin;
 27	10	1	2999
 28	10	4	999
 29	11	3	2900
+30	12	3	1499
+31	12	2	1999
+32	12	3	1499
+33	13	1	1420
+34	13	1	1420
+35	13	1	1420
+36	13	3	1499
+37	13	3	1499
+38	13	3	1499
+39	13	3	1499
+40	13	3	1499
+41	13	3	1499
+42	13	3	1499
+43	13	3	1499
+44	13	3	1499
+45	14	2	1999
+46	14	2	1999
+47	15	1	1420
 \.
 
 
@@ -277,6 +295,10 @@ COPY public.carts ("cartId", "createdAt") FROM stdin;
 9	2020-04-13 02:26:31.987069+00
 10	2020-04-13 10:16:17.142688+00
 11	2020-04-14 10:05:44.331779+00
+12	2020-04-17 21:51:13.986221+00
+13	2020-04-20 01:02:58.635428+00
+14	2020-04-20 05:01:39.807855+00
+15	2020-04-20 05:18:00.793412+00
 \.
 
 
@@ -305,6 +327,16 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 60	9	Tracy	0000 0000 0000 0000	123 Testing St	2020-04-13 09:57:22.710818+00
 61	10	Tracy	0000 0000 0000 0000	123 Whatever Lane	2020-04-13 10:24:13.938349+00
 62	10	Tracy	000000000000000000	3425678dsfgh	2020-04-13 10:25:20.844102+00
+65	13	Tracy	0000 0000 0000	asdfghj	2020-04-20 04:54:58.183319+00
+66	13	asdf	asdf	s	2020-04-20 05:01:11.489993+00
+67	14	sdfgh	12345676432	s	2020-04-20 05:01:49.778527+00
+68	14	asd	asd	asd	2020-04-20 05:05:08.43679+00
+69	14	Tracy	123456789023456	H	2020-04-20 05:05:40.245088+00
+70	14	asdfghjk	wejk	e	2020-04-20 05:07:14.351761+00
+71	14	asdf	asdf	q	2020-04-20 05:17:47.865284+00
+74	15	asdasdasd	000000000000000	asd	2020-04-20 05:21:35.249291+00
+75	15	asdasdasd	000000	asdasd	2020-04-20 05:22:33.060583+00
+76	15	asd	123	23456yrtesdfgh	2020-04-20 06:19:02.843165+00
 \.
 
 
@@ -313,12 +345,6 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 --
 
 COPY public.products ("productId", name, price, image, "shortDescription", "longDescription") FROM stdin;
-1	Nivea Sun Protect	1420	/images/nivea-sunscreen.jpg	UV gel that feels like skin lotion and spreads like water on your skin. Gentle on skin, and will not leave white residue.	Ingredients: Water, Ethylhexyl Methoxycinnamate, Ethanol, PG, Dimethicone, Ethylhexyl Triazone, Hexyl Diethylaminohydroxybenzoylbenzoate, BG, Lysine Dilauroyl Glutamate Na, Quince Seed Extract, Beet Wax Extract, Kihaeda Bark Extract, Hydrolyzed Hyaluronic Acid, (Acrylates / Alkyl Acrylate (C 10 - 30)) Crosspolymer, Carbomer, Tocopherol Acetate, Sodium Hydroxide, BHT, Methylparaben
-2	Skin Aqua Tone Up	1999	/images/skin-aqua.jpg	Cosme award winning sunscreen (2018, 2019). SPF50+ PA++++ A lavender shade UV essence for clear, dewy skin.	Ingredients: Water, Alcohol, Ethylhexyl Methoxycinnamate, Butylene Glycol, Diphenylsiloxy Phenyl Trimethicone, Titanium Dioxide, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Sodium Hyaluronate, Magnesium Ascorbyl Phosphate, Passiflora Edulis Fruit Extract, Hydrolyzed Prunus Domestica, Rosa Roxburghii Fruit Extract, Bis-PEG-18 Methyl Ether Dimethyl Silane, Methyl Methacrylate/Glycol Dimethacrylate Crosspolymer, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Acrylates Copolymer, Polysorbate 60, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Triethanolamine, Ammonium Acryloyldimethyltaurate/VP Copolymer, Silica, PEG-12 Dimethicone, Polystyrene, Polyvinyl Alcohol, Disodium EDTA, Xantham Gum, Alumina, Butylated Hydroxytoluene, Polyglyceryl-2 Triisostearate, Synthetic Fluorphlogopite, Tin Oxide, CI 73360, CI 42090, Fragrance
-3	Biore Aqua Rich	1499	/images/biore-aqua-rich.jpg	Light skin feel, absorbs quickly, leaves no white cast. Infused with Hyaluronic Acid & Royal Jelly Extract.	Water, Alcohol, Ethylhexyl Methoxycinnamate, Ethylhexyl Triazone, Isopropyl Palmitate, Lauryl Methacrylate/​Sodium Methacrylate Crosspolymer, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Hydrogenated Polyisobutene, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Dextrin Palmitate, Butylene Glycol, Xylitol, Acrylates/​C10-30 Alkyl Acrylate Crosspolymer, Dimethicone, C12-15 Alkyl Benzoate, Glycerin, Propanediol, Glyceryl Stearate, Glyceryl Behenate, Vinyl Dimethicone/​Methicone Silsesquioxane Crosspolymer, Potassium Hydroxide, Cetyl Alcohol, Agar, Sorbitan Distearate, Isoceteth-20, Polyvinyl Alcohol, Dimethicone/​Vinyl Dimethicone Crosspolymer, Stearoyl Glutamic Acid, Arginine, Disodium EDTA, Fragrance, BHT, Sodium Hydroxide, Tocopherol, Royal Jelly Extract, Sodium Hyaluronate, Phenoxyethanol, Methylparaben
-4	Krave Sun Fluid	2000	/images/krave.jpg	A gentle, antioxidant-rich day fluid that protects your skin from harsh environmental stressors.	Ingredients: Water, Butyloctyl Salicylate, Dibutyl Adipate, Beta Vulgaris (Beet) Root Extract, Alcohol, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Triazone, Glycerin,  Pentylene Glycol, Isoamyl p-Methoxycinnamate, Polysilicone-15, Inulin Lauryl Carbamate, Methyl Methacrylate Crosspolymer, Sodium Acrylate/Sodium Acryloyldimethyl Taurate Copolymer, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Tromethamine, Methylpropanediol, Isohexadecane, Caprylyl Glycol, Glyceryl Caprylate, Polymethylsilsesquioxane, 1,2-Hexanediol, Polysorbate 80, Lithospermum Erythrorhizon Root Extract, Macadamia Ternifolia Seed Oil, Sorbitan Oleate, Ethylhexylglycerin, Allantoin, Epigallocatechin Gallate, Sodium Ascorbyl Phosphate, Butylene Glycol, Resveratrol
-5	Make P:rem Sun Fluid	3350	/images/make-prem-sun-fluid.png	This sun fluid, a 100% reflective sunscreen for body and face, contains mineral filter that blocks out UVA and UVB simulataneously.	Ingredients: Water, Cyclomethicone, Zinc Oxide (CI 77947), Propanediol, Titanium Dioxide (CI 77891), Dicaprylyl Carbonate, Polyglyceryl-3 Polydimethylsiloxyethyl Dimethicone, Cetyl Ethylhexanoate, 1,2-Hexanediol, Disteardimonium Hectorite, Magnesium Sulfate, Salvia Hispanica (Chia) Seed Extract, Centella Asiatica (Gotu Kola) Extract, Houttuynia Cordata Extract, Hydrogen Dimethicone, Aluminum Hydroxide, Polyglyceryl-2 Dipolyhydroxystearate, Stearic Acid, Dimethicone Crosspolymer, Phenyl Trimethicone, Fructooligosaccharides, Saccharide Hydrolysate, Pullulan, Citrus Aurantium Bergamia (Bergamot) Fruit Oil, Ethylhexylglycerin, Octyldodecanol, Salvia Officinalis (Sage) Oil, Betula Platyphylla Japonica Juice, Dipropylene Glycol, Echium Plantagineum Seed Oil, Xylitylglucoside, Sodium Palmitoyl Proline, Rubus Arcticus Callus Extract, Anhydroxylitol, Xylitol, Nymphaea Alba (White Water Lily) Flower Extract, Butylene Glycol, Cardiospermum Halicacabum Flower/Leaf/Vine Extract, Helianthus Annuus (Sunflower) Seed Oil Unsaponifiables, Glucose, Tocopherol, Sodium Hyaluronate
-6	Make P:rem Sun Gel	3150	/images/make-prem-sun-gel.png	Lightweight broad spectrum SPF 50+ PA++++ UVA/UVB protection while cooling down skin's temperature.	Ingredients: Water, Ethylhexyl Methoxycinnamate, Homosalate, Ethylhexyl Salicylate, Diethylamino Hydroxybenzoyl Hexyl Benzoate, Propanediol, Niacinamide, Dimethicone Crosspolymer, Pentylene Glycol, Salvia Hispanica Seed Extract, Centella Asiatica Extract, Houttuynia Cordata Extract, Ammonium Acryloyldimethyltaurate/VP Copolymer, Fragrance, Glyceryl Caprylate, Fructooligosaccharides, Saccharide Hydrolysate, Ethylhexylglycerin, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Tromethamine, Pullulan, Adenosine, 1,2-Hexanediol, Betula Alba Juice, Dipropylene Glycol, Butylene Glycol, Xylitylglucoside, Sodium Palmitoyl Proline, Rubus Arcticus Callus Extract, Anhydroxylitol, Xylitol, Nymphaea Alba Flower Extract, Glycerin, Chamaecyparis Obtusa Leaf Extract, Glucose, Polyglyceryl-10 Oleate, Alcohol, Lecithin, Sodium Dilauramidoglutamide Lysine, Thermus Thermophillus Ferment, Phytosterols, Hydrogenated Lecithin, Lysolecithin, Sodium Ascorbyl Phosphate, Ascophyllum Nodosum Extract, Sodium Hyaluronate, Leuconostoc/Radish Root Ferment Filtrate, Potassium Sorbate, Disodium EDTA, Citric Acid
 \.
 
 
@@ -326,21 +352,21 @@ COPY public.products ("productId", name, price, image, "shortDescription", "long
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 29, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 47, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 11, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 15, true);
 
 
 --
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 62, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 76, true);
 
 
 --
