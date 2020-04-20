@@ -12,14 +12,14 @@ export default class Header extends React.Component {
           </div>
         </div>
         <div className="ml-auto">
-          <span className="d-block p-2 text-white click">
-            <div className="text-white" onClick={(name, params) => this.props.setView('cart',
-              {})}>
-              {this.props.cart.length} Items
-              <i className="text-white fas fa-shopping-cart pl-2">
-              </i>
+          <div className="text-white" onClick={(name, params) => this.props.setView('cart',
+            {})}>
+            <div id="bag">
+              <span className="p1 fa-stack fa-2x has-badge click" data-count={this.props.cart.length}>
+                <i className="p1 fas fa-shopping-bag fa-stack-1x xfa-inverse" data-count={this.props.cart.length}></i>
+              </span>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     );

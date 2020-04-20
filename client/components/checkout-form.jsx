@@ -12,6 +12,7 @@ export default class CheckoutForm extends React.Component {
     this.handleCC = this.handleCC.bind(this);
     this.handleShipping = this.handleShipping.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.button = this.button.bind(this);
   }
 
   handleName(event) {
@@ -34,24 +35,36 @@ export default class CheckoutForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.props.placeOrder(this.state);
+    this.props.setView('catalog', {});
+    this.props.cart([]);
+  }
 
-    if (this.state.name.length < 3) {
-      alert('Please use proper name');
-    } else if (this.state.creditCard.length < 16) {
-      alert('Please enter 16-digit for credit card');
-    } else if (this.state.shippingAddress.length < 12) {
-      alert('Please enter a valid address');
+  button() {
+    event.preventDefault();
+    if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
+      return (
+        <div className="col my-4 mb-5">
+          <button type="submit" className="btn btn-primary float-right mr-5" onClick={this.handleSubmit}>
+            Place Order
+          </button>
+        </div>
+      );
     } else {
-      this.props.placeOrder(this.state);
-      this.props.setView('catalog', {});
-      this.props.cart([]);
+      return (
+        <div className="col my-4 mb-5">
+          <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
+            Place Order
+          </button>
+        </div>
+      );
     }
   }
 
   render() {
     return (
       <div className="container">
-        <h2 className="pt-5">My Cart</h2>
+        <h2 className="pt-5">My Bag</h2>
         <div className="price-description pt-2 pb-3">Order Total: ${this.props.getTotalCost()}
         </div>
         <form>
@@ -90,9 +103,7 @@ export default class CheckoutForm extends React.Component {
             </div>
             <div className="ml-auto">
               <div className="d-block p-3">
-                <button type="submit" className="btn btn-info" onClick={this.handleSubmit}>
-                  Order
-                </button>
+                {this.button()}
               </div>
             </div>
           </div>

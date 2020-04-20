@@ -27,10 +27,10 @@ export default class CartSummaryItem extends React.Component {
           <div className="back-to-catalog p-1" onClick={(name, params) => this.props.setView(
             'catalog',
             {})}>
-            <button className="btn btn-info">Back to Catalog</button>
+            <button className="btn btn-info">Back to Products</button>
           </div>
-          <h2 className="p-1">My Cart</h2>
-          <div>There are no items in your cart.</div>
+          <h2 className="p-1">My Bag</h2>
+          <div>There are no items in your bag.</div>
         </div>
       );
     } else {
@@ -42,10 +42,10 @@ export default class CartSummaryItem extends React.Component {
                 'catalog',
                 {})}>
                 <button className="btn btn-outline-info">
-                  Back to Catalog
+                  Back to Products
                 </button>
               </div>
-              <h2>My Cart</h2>
+              <h2>My Bag</h2>
             </div>
             <div className="text-center">
               {this.createCartItems()}
