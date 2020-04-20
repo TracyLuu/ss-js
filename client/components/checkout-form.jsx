@@ -12,6 +12,7 @@ export default class CheckoutForm extends React.Component {
     this.handleCC = this.handleCC.bind(this);
     this.handleShipping = this.handleShipping.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.button = this.button.bind(this);
   }
 
   handleName(event) {
@@ -39,22 +40,29 @@ export default class CheckoutForm extends React.Component {
     this.props.cart([]);
   }
 
-  render() {
-    let button;
+  button() {
     if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
-      button = <div className="col my-4 mb-5">
-        <button type="submit" className="btn btn-primary float-right mr-5"
-          onClick={this.handleSubmit(event)}>
+      return (
+        <div className="col my-4 mb-5">
+          <button type="submit" className="btn btn-primary float-right mr-5"
+            onClick={this.handleSubmit(event)}>
           Order
-        </button>
-      </div>;
+          </button>
+        </div>
+      );
     } else {
-      button = <div className="col my-4 mb-5">
-        <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
+      return (
+        <div className="col my-4 mb-5">
+          <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
           Order
-        </button>
-      </div>;
+          </button>
+        </div>
+      );
     }
+  }
+
+  render() {
+
     return (
       <div className="container">
         <h2 className="pt-5">My Bag</h2>
@@ -96,7 +104,7 @@ export default class CheckoutForm extends React.Component {
             </div>
             <div className="ml-auto">
               <div className="d-block p-3">
-                {button}
+                {this.button()}
               </div>
             </div>
           </div>
