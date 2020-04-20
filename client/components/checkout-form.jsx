@@ -34,24 +34,30 @@ export default class CheckoutForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    if (this.state.name.length < 3) {
-      alert('Please use proper name');
-    } else if (this.state.creditCard.length < 16) {
-      alert('Please enter 16-digit for credit card');
-    } else if (this.state.shippingAddress.length < 12) {
-      alert('Please enter a valid address');
-    } else {
-      this.props.placeOrder(this.state);
-      this.props.setView('catalog', {});
-      this.props.cart([]);
-    }
+    this.props.placeOrder(this.state);
+    this.props.setView('catalog', {});
+    this.props.cart([]);
   }
 
   render() {
+    let button;
+    if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
+      button = <div className="col my-4 mb-5">
+        <button type="submit" className="btn btn-primary float-right mr-5"
+          onClick={this.handleSubmit}>
+          Order
+        </button>
+      </div>;
+    } else {
+      button = <div className="col my-4 mb-5">
+        <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
+          Order
+        </button>
+      </div>;
+    }
     return (
       <div className="container">
-        <h2 className="pt-5">My Cart</h2>
+        <h2 className="pt-5">My Bag</h2>
         <div className="price-description pt-2 pb-3">Order Total: ${this.props.getTotalCost()}
         </div>
         <form>
@@ -90,9 +96,7 @@ export default class CheckoutForm extends React.Component {
             </div>
             <div className="ml-auto">
               <div className="d-block p-3">
-                <button type="submit" className="btn btn-info" onClick={this.handleSubmit}>
-                  Order
-                </button>
+                {button}
               </div>
             </div>
           </div>
