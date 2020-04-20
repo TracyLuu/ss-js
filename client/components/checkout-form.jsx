@@ -41,12 +41,12 @@ export default class CheckoutForm extends React.Component {
   }
 
   button() {
+    event.preventDefault();
     if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
       return (
         <div className="col my-4 mb-5">
-          <button type="submit" className="btn btn-primary float-right mr-5"
-            onClick={this.handleSubmit(event)}>
-          Order
+          <button type="submit" className="btn btn-primary float-right mr-5" onClick={this.handleSubmit}>
+            Place Order
           </button>
         </div>
       );
@@ -54,7 +54,7 @@ export default class CheckoutForm extends React.Component {
       return (
         <div className="col my-4 mb-5">
           <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
-          Order
+            Place Order
           </button>
         </div>
       );
