@@ -44,16 +44,16 @@ export default class CheckoutForm extends React.Component {
     event.preventDefault();
     if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
       return (
-        <div className="col my-4 mb-5">
-          <button type="submit" className="btn btn-primary float-right mr-5" onClick={this.handleSubmit}>
+        <div className="col my-4 mb-5 d-flex justify-content-space-around">
+          <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>
             Place Order
           </button>
         </div>
       );
     } else {
       return (
-        <div className="col my-4 mb-5">
-          <button type="submit" className="btn btn-primary float-right mr-5 disabled" disabled={true}>
+        <div className="col my-4 mb-5 d-flex justify-content-space-around">
+          <button type="submit" className="btn btn-primary disabled" disabled={true}>
             Place Order
           </button>
         </div>
@@ -99,10 +99,10 @@ export default class CheckoutForm extends React.Component {
             <div className="back-to-catalog p-3" onClick={(name, params) => this.props.setView(
               'catalog',
               {})}>
-              <button className="btn btn-outline-info">Continue Shopping</button>
+              <button className="btn btn-outline-info mt-2">Continue Shopping</button>
             </div>
             <div className="ml-auto">
-              <div className="d-block p-3">
+              <div>
                 {this.button()}
               </div>
             </div>
