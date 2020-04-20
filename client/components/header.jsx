@@ -6,8 +6,8 @@ export default class Header extends React.Component {
     return (
       <div className="bg-info m-0 d-flex">
         <div className="row m-0 p-2 pt-3">
-          <div className="text-white">
-            <i className="fas fa-sun pr-2 fa-2x">
+          <div className="text-white h2">
+            <i className="fas fa-sun pr-2">
             </i>
             Sunscreen Store
           </div>
