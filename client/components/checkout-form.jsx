@@ -62,7 +62,6 @@ export default class CheckoutForm extends React.Component {
   }
 
   render() {
-
     return (
       <div className="container">
         <h2 className="pt-5">My Bag</h2>
