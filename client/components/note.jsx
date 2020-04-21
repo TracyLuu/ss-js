@@ -16,7 +16,6 @@ export default class Note extends React.Component {
           </div>
         </div>
       </div>
-
     );
   }
 }

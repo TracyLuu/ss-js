@@ -96,10 +96,7 @@ export default class App extends React.Component {
   render() {
     if (this.state.view.name === 'modal') {
       return (
-        <div>
-          <Note toCatalog={this.toCatalog} />
-        </div>
-
+        <Note toCatalog={this.toCatalog} />
       );
     } else if (this.state.view.name === 'catalog') {
       return (
