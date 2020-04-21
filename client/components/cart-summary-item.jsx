@@ -29,7 +29,7 @@ export default class CartSummaryItem extends React.Component {
             <div className="back-to-catalog p-1" onClick={(name, params) => this.props.setView(
               'catalog',
               {})}>
-              <button className="btn btn-info justify-content-center">Back to Products</button>
+              <button className="btn btn-info">Back to Products</button>
             </div>
           </div>
         </div>
