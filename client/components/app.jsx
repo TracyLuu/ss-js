@@ -9,7 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: { name: 'catalog', params: {} },
+      view: { name: 'modal', params: {} },
       cart: []
     };
     this.setView = this.setView.bind(this);
@@ -18,6 +18,7 @@ export default class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
     this.getTotalCost = this.getTotalCost.bind(this);
+    this.toCatalog = this.toCatalog.bind(this);
   }
 
   componentDidMount() {
@@ -85,8 +86,27 @@ export default class App extends React.Component {
     return totalCost;
   }
 
+  toCatalog() {
+    this.setState({
+      view: { name: 'catalog', params: {} }
+    });
+  }
+
   render() {
-    if (this.state.view.name === 'catalog') {
+    if (this.state.view.name === 'modal') {
+      return (
+        <div>
+          <p>
+            Please note that this shop is for demonstration purposes only.
+            Please do not provide real information when checking out.
+            Thank you and enjoy browsing!
+          </p>
+          <div>
+            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.toCatalog}>Understood</button>
+          </div>
+        </div>
+      );
+    } else if (this.state.view.name === 'catalog') {
       return (
         <>
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
