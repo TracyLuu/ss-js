@@ -4,6 +4,7 @@ import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummaryItem from './cart-summary-item';
 import CheckoutForm from './checkout-form';
+import Note from './note';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -96,15 +97,9 @@ export default class App extends React.Component {
     if (this.state.view.name === 'modal') {
       return (
         <div>
-          <p>
-            Please note that this shop is for demonstration purposes only.
-            Please do not provide real information when checking out.
-            Thank you and enjoy browsing!
-          </p>
-          <div>
-            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.toCatalog}>Understood</button>
-          </div>
+          <Note toCatalog={this.toCatalog} />
         </div>
+
       );
     } else if (this.state.view.name === 'catalog') {
       return (
