@@ -11,8 +11,8 @@ export default class Note extends React.Component {
             Please do not provide real information when checking out.
             Thank you and enjoy browsing!
           </h4>
-          <div>
-            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.toCatalog}>Understood</button>
+          <div className="p-2">
+            <button type="button" className="btn btn-info" data-dismiss="modal" onClick={this.props.toCatalog}>Understood</button>
           </div>
         </div>
       </div>
