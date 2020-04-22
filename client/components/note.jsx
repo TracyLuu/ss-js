@@ -22,7 +22,7 @@ export default class Note extends React.Component {
             Please do not provide real information when checking out.
             Thank you and enjoy browsing!
           </div>
-          <button type="button" className="btn btn-danger" onClick={this.modalNote}>Close</button>
+          <button type="button" className="btn btn-danger" onClick={this.modalNote}>Accept</button>
         </div>
       );
     } else {
