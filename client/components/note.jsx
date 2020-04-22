@@ -16,13 +16,13 @@ export default class Note extends React.Component {
   render() {
     if (this.state.modal === true) {
       return (
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.modalNote}>Close</button>
+        <div className="alert alert-info text-center" role="alert">
+          <div className="p-2">
+            Please note that this shop is for demonstration purposes only.
+            Please do not provide real information when checking out.
+            Thank you and enjoy browsing!
           </div>
+          <button type="button" className="btn btn-danger" onClick={this.modalNote}>Close</button>
         </div>
       );
     } else {
