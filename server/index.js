@@ -101,7 +101,6 @@ app.post('/api/cart', (req, res, next) => {
       }
     })
     .then(combinedObj => {
-
       req.session.cartId = combinedObj.cartId;
       const sql = `insert into "cartItems" ("cartId", "productId", "price")
     values ($1, $2, $3)
