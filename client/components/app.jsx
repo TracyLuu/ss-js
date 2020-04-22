@@ -4,6 +4,7 @@ import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummaryItem from './cart-summary-item';
 import CheckoutForm from './checkout-form';
+import Note from './note';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -89,6 +90,7 @@ export default class App extends React.Component {
     if (this.state.view.name === 'catalog') {
       return (
         <>
+          <Note />
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <ProductList setView={this.setView} view={this.state.view} />
         </>
