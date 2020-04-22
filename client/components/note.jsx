@@ -19,7 +19,7 @@ export default class Note extends React.Component {
         <div className="alert alert-info text-center" role="alert">
           <div className="p-2">
             Please note that this shop is for demonstration purposes only.
-            Please do not provide real information when checking out.
+            No real purchases will be made.
             Thank you and enjoy browsing!
           </div>
           <button type="button" className="btn btn-danger" onClick={this.modalNote}>Accept</button>
