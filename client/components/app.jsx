@@ -10,7 +10,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: { name: 'modal', params: {} },
+      view: { name: 'catalog', params: {} },
       cart: []
     };
     this.setView = this.setView.bind(this);
@@ -19,7 +19,6 @@ export default class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
     this.getTotalCost = this.getTotalCost.bind(this);
-    this.toCatalog = this.toCatalog.bind(this);
   }
 
   componentDidMount() {
@@ -87,20 +86,11 @@ export default class App extends React.Component {
     return totalCost;
   }
 
-  toCatalog() {
-    this.setState({
-      view: { name: 'catalog', params: {} }
-    });
-  }
-
   render() {
-    if (this.state.view.name === 'modal') {
-      return (
-        <Note toCatalog={this.toCatalog} />
-      );
-    } else if (this.state.view.name === 'catalog') {
+    if (this.state.view.name === 'catalog') {
       return (
         <>
+          <Note />
           <Header cart={this.state.cart} setView={this.setView} view={this.state.view} />
           <ProductList setView={this.setView} view={this.state.view} />
         </>
