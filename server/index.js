@@ -131,8 +131,11 @@ app.post('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/orders', (req, res, next) => {
+app.delete('/api/cartItems', (req, res, next) => {
 
+});
+
+app.post('/api/orders', (req, res, next) => {
   const { cartId } = req.session;
 
   if (!(Number(cartId))) {
