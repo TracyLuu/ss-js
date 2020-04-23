@@ -156,6 +156,24 @@ app.patch('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/cart', (req, res, next) => {
+
+  const sql = `
+  delete from "cartItems"
+  where "cartItemId" = $1 AND "cartId" = $2
+  `;
+  const cartItemId = req.session.cartItemId;
+  const cartId = req.session.cartId;
+
+  const params = [cartItemId, cartId];
+  db.query(sql, params)
+    .then(result => {
+      const [deleteObj] = result.rows;
+      return res.status(200).json(deleteObj);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/orders', (req, res, next) => {
   const { cartId } = req.session;
 
