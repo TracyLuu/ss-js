@@ -131,8 +131,29 @@ app.post('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/cartItems', (req, res, next) => {
+app.patch('/api/cart', (req, res, next) => {
 
+  const sql = `
+  update "cartItems"
+  set "productId" = $3,
+      "price" = $4
+  where "cartItemId" = $1 AND "cartId" = $2
+  returning *
+  `;
+
+  const productId = req.body.productId;
+  const price = req.body.price;
+  const cartItemId = req.session.cartItemId;
+  const cartId = req.body.cartId;
+
+  const params = [productId, price, cartItemId, cartId];
+
+  db.query(sql, params)
+    .then(result => {
+      const updateCart = result.rows[0];
+      return res.status(200).json(updateCart);
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/orders', (req, res, next) => {
