@@ -131,6 +131,8 @@ app.post('/api/cart/:productId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// I think this is how you do patch but i didnt test it yet...
+// Gonna make sure I can delete before I patch
 // app.patch('/api/cart', (req, res, next) => {
 
 //   const sql = `
