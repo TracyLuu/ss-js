@@ -6,15 +6,21 @@ export default class CartSummaryItem extends React.Component {
     this.state = {
       cartItemId: null
     };
+    this.deleteCartById = this.deleteCartById.bind(this);
+  }
+
+  deleteCartById() {
+    const cartItemId = this.state.cartItemId;
+    this.props.deleteCart(cartItemId);
   }
 
   createCartItems() {
-    const cartItemId = this.state.cartItemId;
+
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
-            <i className="fas fa-times" onClick={() => this.props.deleteCart(cartItemId)}></i>
+            <i className="fas fa-times" onClick={this.deleteCartById}></i>
           </div>
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>

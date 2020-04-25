@@ -27,7 +27,7 @@ export default class App extends React.Component {
   }
 
   deleteCart(cartItemId) {
-    fetch('/api/cart/:cartItemId', {
+    fetch(`/api/cart/${cartItemId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
