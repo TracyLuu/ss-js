@@ -74,7 +74,7 @@ app.get('/api/cart', (req, res, next) => {
   }
 });
 
-app.post('/api/cart', (req, res, next) => {
+app.post('/api/cart/:productId', (req, res, next) => {
   const { productId } = req.body;
   if (!(Number(productId)) || productId <= 0) {
     res.status(400).json({ err: 'ProductID should be positive number' });
@@ -143,10 +143,11 @@ app.patch('/api/cart', (req, res, next) => {
 
   const productId = req.body.productId;
   const price = req.body.price;
+  const quantity = req.body.quantity;
   const cartItemId = req.session.cartItemId;
   const cartId = req.body.cartId;
 
-  const params = [productId, price, cartItemId, cartId];
+  const params = [productId, price, quantity, cartItemId, cartId];
 
   db.query(sql, params)
     .then(result => {
@@ -156,20 +157,19 @@ app.patch('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/cart', (req, res, next) => {
+app.delete('/api/cart/:cartItemId', (req, res, next) => {
+
+  const cartItemId = req.params.cartItemId;
 
   const sql = `
   delete from "cartItems"
-  where "cartItemId" = $1 AND "cartId" = $2
+  where "cartItemId" = $1
+  returning *
   `;
-  const cartItemId = req.session.cartItemId;
-  const cartId = req.session.cartId;
 
-  const params = [cartItemId, cartId];
-  db.query(sql, params)
+  db.query(sql, [cartItemId])
     .then(result => {
-      const [deleteObj] = result.rows;
-      return res.status(200).json(deleteObj);
+
     })
     .catch(err => next(err));
 });
