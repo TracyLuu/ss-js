@@ -6,10 +6,9 @@ export default class CartSummaryItem extends React.Component {
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
-          <div>
+          <div className="row pl-2">
             <i className="fas fa-times"></i>
           </div>
-
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
           </div>
