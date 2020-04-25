@@ -19,24 +19,24 @@ export default class App extends React.Component {
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
     this.getTotalCost = this.getTotalCost.bind(this);
-    // this.deleteCart = this.deleteCart.bind(this);
+    this.deleteCart = this.deleteCart.bind(this);
   }
 
   componentDidMount() {
     this.getCartItems();
   }
 
-  // deleteCart(cartItemId) {
-  //   fetch('/api/cart/:cartItemId', {
-  //     method: 'DELETE',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       cartItemId: cartItemId
-  //     })
-  //   })
-  //     .then(result => this.getCartItems())
-  //     .catch(err => console.error(err));
-  // }
+  deleteCart(cartItemId) {
+    fetch('/api/cart/:cartItemId', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cartItemId: cartItemId
+      })
+    })
+      .then(result => this.getCartItems())
+      .catch(err => console.error(err));
+  }
 
   addToCart(product) {
     fetch('/api/cart', {
@@ -123,7 +123,7 @@ export default class App extends React.Component {
             cart={this.state.cart}
             setView={this.setView}
             getTotalCost={this.getTotalCost}
-            // deleteCart={this.deleteCart}
+            deleteCart={this.deleteCart}
           />
         </>
       );
