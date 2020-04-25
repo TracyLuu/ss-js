@@ -74,7 +74,7 @@ app.get('/api/cart', (req, res, next) => {
   }
 });
 
-app.post('/api/cart', (req, res, next) => {
+app.post('/api/cart/:productId', (req, res, next) => {
   const { productId } = req.body;
   if (!(Number(productId)) || productId <= 0) {
     res.status(400).json({ err: 'ProductID should be positive number' });
@@ -131,27 +131,48 @@ app.post('/api/cart', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.patch('/api/cart', (req, res, next) => {
+// I think this is how you do patch but i didnt test it yet...
+// Gonna make sure I can delete before I patch
+// app.patch('/api/cart', (req, res, next) => {
+
+//   const sql = `
+//   update "cartItems"
+//   set "productId" = $3,
+//       "price" = $4
+//   where "cartItemId" = $1 AND "cartId" = $2
+//   returning *
+//   `;
+
+//   const productId = req.body.productId;
+//   const price = req.body.price;
+//   const quantity = req.body.quantity;
+//   const cartItemId = req.session.cartItemId;
+//   const cartId = req.body.cartId;
+
+//   const params = [productId, price, quantity, cartItemId, cartId];
+
+//   db.query(sql, params)
+//     .then(result => {
+//       const updateCart = result.rows[0];
+//       return res.status(200).json(updateCart);
+//     })
+//     .catch(err => next(err));
+// });
+
+app.delete('/api/cart/:cartItemId', (req, res, next) => {
+
+  const cartItemId = req.params.cartItemId;
 
   const sql = `
-  update "cartItems"
-  set "productId" = $3,
-      "price" = $4
-  where "cartItemId" = $1 AND "cartId" = $2
+  delete from "cartItems"
+  where "cartItemId" = $1
   returning *
   `;
 
-  const productId = req.body.productId;
-  const price = req.body.price;
-  const cartItemId = req.session.cartItemId;
-  const cartId = req.body.cartId;
-
-  const params = [productId, price, cartItemId, cartId];
-
-  db.query(sql, params)
+  db.query(sql, [cartItemId])
     .then(result => {
-      const updateCart = result.rows[0];
-      return res.status(200).json(updateCart);
+      const [deletedObj] = result.rows;
+      return res.status(200).json(deletedObj);
     })
     .catch(err => next(err));
 });
