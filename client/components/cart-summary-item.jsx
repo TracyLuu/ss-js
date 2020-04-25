@@ -6,6 +6,10 @@ export default class CartSummaryItem extends React.Component {
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
+          <div>
+            <i className="fas fa-times"></i>
+          </div>
+
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
           </div>
@@ -37,7 +41,7 @@ export default class CartSummaryItem extends React.Component {
     } else {
       return (
         <>
-          <div className="m-0 p-2">
+          <div className="p-2 container justify-content-center">
             <div className="p-2">
               <div className="back-to-catalog pb-1" onClick={(name, params) => this.props.setView(
                 'catalog',
