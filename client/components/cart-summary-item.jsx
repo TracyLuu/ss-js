@@ -1,11 +1,33 @@
 import React from 'react';
 
 export default class CartSummaryItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: true
+    };
+    this.deleteCartById = this.deleteCartById.bind(this);
+  }
+
+  deleteCartById(cartItem) {
+    const cartItemId = cartItem.cartItemId;
+    this.props.deleteCart(cartItemId);
+    if (this.state.visible === true) {
+      return (
+        <>
+
+        </>
+      );
+    }
+  }
 
   createCartItems() {
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
+          <div className="row pl-3">
+            <i className="fas fa-times" onClick={ () => this.deleteCartById(cartItem)}></i>
+          </div>
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
           </div>
@@ -37,7 +59,7 @@ export default class CartSummaryItem extends React.Component {
     } else {
       return (
         <>
-          <div className="m-0 p-2">
+          <div className="p-2 container justify-content-center">
             <div className="p-2">
               <div className="back-to-catalog pb-1" onClick={(name, params) => this.props.setView(
                 'catalog',

@@ -74,7 +74,7 @@ app.get('/api/cart', (req, res, next) => {
   }
 });
 
-app.post('/api/cart/:productId', (req, res, next) => {
+app.post('/api/cart', (req, res, next) => {
   const { productId } = req.body;
   if (!(Number(productId)) || productId <= 0) {
     res.status(400).json({ err: 'ProductID should be positive number' });
