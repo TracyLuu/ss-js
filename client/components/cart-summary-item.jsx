@@ -11,26 +11,14 @@ export default class CartSummaryItem extends React.Component {
 
   deleteCartById(cartItem) {
     const cartItemId = cartItem.cartItemId;
+    this.props.deleteCart(cartItemId);
     if (this.state.visible === true) {
       return (
         <>
-          <div className="modal">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Are you sure?</h5>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-primary" onClick={() => this.props.deleteCart(cartItemId)}>Delete</button>
-                  <button type="button" className="btn btn-secondary" onClick={() => this.props.setView('cart', {})}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </>
       );
     }
-
   }
 
   createCartItems() {
