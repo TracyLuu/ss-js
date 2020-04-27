@@ -28,10 +28,27 @@ export default class CartSummaryItem extends React.Component {
       this.setState({ visible: true });
     }
     return (this.props.cart.map((cartItem, index) =>
+
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
-            <div id="exampleModal">
+            <div className="exampleModal justify-content-center p-3">
+              <div className="modal-title text-center">
+                Are you sure?
+              </div>
+              <div className="d-flex justify-content-center">
+                <div className="p-2">
+                  <button className="btn btn-secondary p-2">
+                    Cancel
+                  </button>
+                </div>
+                <div className="p-2">
+                  <button className="btn btn-danger p-2">
+                    Delete
+                  </button>
+                </div>
+
+              </div>
             </div>
             <i className="fas fa-times" onClick={ () => this.deleteCartById(cartItem)}></i>
           </div>
