@@ -10,22 +10,29 @@ export default class CartSummaryItem extends React.Component {
   }
 
   deleteCartById(cartItem) {
-    const cartItemId = cartItem.cartItemId;
-    this.props.deleteCart(cartItemId);
-    if (this.state.visible === true) {
-      return (
-        <>
 
-        </>
-      );
-    }
+    // const cartItemId = cartItem.cartItemId;
+    // this.props.deleteCart(cartItemId);
+
+    // if (this.state.visible === true) {
+    //   return (
+    //     <>
+    //       <DeleteCartModal />
+    //     </>
+    //   );
+    // }
   }
 
   createCartItems() {
+    if (this.state.visible === false) {
+      this.setState({ visible: true });
+    }
     return (this.props.cart.map((cartItem, index) =>
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
+            <div id="exampleModal">
+            </div>
             <i className="fas fa-times" onClick={ () => this.deleteCartById(cartItem)}></i>
           </div>
           <div className="centered">

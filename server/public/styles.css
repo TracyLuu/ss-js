@@ -169,3 +169,11 @@
 .contain {
   width: 100%
 }
+
+
+#exampleModal {
+  height: 250px;
+  width: 250px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
