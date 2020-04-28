@@ -7,13 +7,16 @@ export default class CartSummaryItem extends React.Component {
       visible: false,
       modal: false
     };
-    this.deleteCartById = this.deleteCartById.bind(this);
+    this.createCartItems = this.createCartItems.bind(this);
+    this.modalPop = this.modalPop.bind(this);
     this.modalCancel = this.modalCancel.bind(this);
     this.modalDelete = this.modalDelete.bind(this);
   }
 
-  deleteCartById() {
-    this.setState({ modal: true });
+  modalPop() {
+    return (
+      this.setState({ modal: true })
+    );
   }
 
   modalCancel() {
@@ -34,27 +37,7 @@ export default class CartSummaryItem extends React.Component {
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
 
-            <div className="exampleModal justify-content-center p-3 hidden">
-              <div className="modal-background">
-                <div className="modal-title text-center p-1">
-                  Remove item from cart?
-                </div>
-                <div className="d-flex justify-content-center">
-                  <div className="p-2">
-                    <button className="btn btn-secondary p-2">
-                      Cancel
-                    </button>
-                  </div>
-                  <div className="p-2">
-                    <button className="btn btn-danger p-2">
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <i className="fas fa-times" onClick={ this.deleteCartById}></i>
+            <i className="fas fa-times" onClick={ this.modalPop}></i>
           </div>
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
@@ -71,22 +54,24 @@ export default class CartSummaryItem extends React.Component {
   }
 
   render() {
-    if (this.props.modal === true) {
+    if (this.state.modal === true) {
       return (
-        <div className="exampleModal justify-content-center p-3">
-          <div className="modal-title text-center">
-            Are you sure?
-          </div>
-          <div className="d-flex justify-content-center">
-            <div className="p-2">
-              <button className="btn btn-secondary p-2">
-                Cancel
-              </button>
+        <div className="exampleModal justify-content-center p-3 hidden">
+          <div className="modal-background">
+            <div className="modal-title text-center p-1">
+              Remove item from cart?
             </div>
-            <div className="p-2">
-              <button className="btn btn-danger p-2">
-                Delete
-              </button>
+            <div className="d-flex justify-content-center">
+              <div className="p-2">
+                <button className="btn btn-secondary p-2">
+                  Cancel
+                </button>
+              </div>
+              <div className="p-2">
+                <button className="btn btn-danger p-2">
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         </div>
