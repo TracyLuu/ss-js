@@ -56,25 +56,55 @@ export default class CartSummaryItem extends React.Component {
   render() {
     if (this.state.modal === true) {
       return (
-        <div className="exampleModal justify-content-center p-3 hidden">
-          <div className="modal-background">
-            <div className="modal-title text-center p-1">
+        <>
+          <div className="exampleModal justify-content-center p-3 hidden">
+            <div className="modal-background">
+              <div className="modal-title text-center p-1">
               Remove item from cart?
-            </div>
-            <div className="d-flex justify-content-center">
-              <div className="p-2">
-                <button className="btn btn-secondary p-2">
+              </div>
+              <div className="d-flex justify-content-center">
+                <div className="p-2">
+                  <button className="btn btn-secondary p-2">
                   Cancel
+                  </button>
+                </div>
+                <div className="p-2">
+                  <button className="btn btn-danger p-2">
+                  Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-2 container justify-content-center">
+            <div className="p-2">
+              <div className="back-to-catalog pb-1" onClick={(name, params) => this.props.setView(
+                'catalog',
+                {})}>
+                <button className="btn btn-outline-info">
+                  Back to Products
                 </button>
               </div>
-              <div className="p-2">
-                <button className="btn btn-danger p-2">
-                  Remove
+              <h2>My Bag</h2>
+            </div>
+            <div className="text-center">
+              {this.createCartItems()}
+            </div>
+            <div className="m-0 p-2 d-flex">
+              <div className="pt-3">
+                Item Total: ${this.props.getTotalCost()}
+              </div>
+              <div className="ml-auto pt-2">
+                <button className="btn btn-info" onClick={(name, params) => this.props.setView(
+                  'checkout',
+                  {})}>
+                  Checkout
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </>
       );
     }
     if (this.props.cart.length === 0) {
