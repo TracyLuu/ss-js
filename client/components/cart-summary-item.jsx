@@ -24,7 +24,7 @@ export default class CartSummaryItem extends React.Component {
   }
 
   modalDelete() {
-    this.props.deleteCart(this.cartItemId);
+    this.props.deleteCart(this.state.cartItemId);
     this.setState({ modal: false });
   }
 
