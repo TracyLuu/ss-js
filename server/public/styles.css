@@ -170,7 +170,7 @@
   width: 100%
 }
 
-.exampleModal {
+.modal-container {
     top: 0;
     left: 0;
     position: fixed;
