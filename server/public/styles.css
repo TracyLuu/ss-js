@@ -172,12 +172,6 @@
 
 
 .exampleModal {
-  /* position: fixed;
-  z-index: 1;
-  height: 125px;
-  width: 250px;
-  border: 1px solid lightgray;
-  border-radius: 5px; */
     top: 0;
     left: 0;
     position: fixed;
