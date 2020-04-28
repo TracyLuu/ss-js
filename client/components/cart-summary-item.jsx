@@ -36,7 +36,7 @@ export default class CartSummaryItem extends React.Component {
 
             <div className="exampleModal justify-content-center p-3 hidden">
               <div className="modal-background">
-                <div className="modal-title text-center">
+                <div className="modal-title text-center p-1">
                   Are you sure?
                 </div>
                 <div className="d-flex justify-content-center">
