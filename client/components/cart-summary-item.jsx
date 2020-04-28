@@ -4,8 +4,8 @@ export default class CartSummaryItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
-      modal: false
+      modal: false,
+      cartItemId: null
     };
     this.createCartItems = this.createCartItems.bind(this);
     this.modalPop = this.modalPop.bind(this);
@@ -13,19 +13,19 @@ export default class CartSummaryItem extends React.Component {
     this.modalDelete = this.modalDelete.bind(this);
   }
 
-  modalPop() {
+  modalPop(cartItem) {
+    const cartItemId = cartItem.cartItemId;
+    this.setState({ cartItemId: cartItemId });
     this.setState({ modal: true });
   }
 
   modalCancel() {
-    this.setState({ visible: false });
+    this.setState({ modal: false });
   }
 
-  modalDelete(cartItem) {
-    this.setState({ visible: false });
-    const cartItemId = cartItem.cartItemId;
-    this.props.deleteCart(cartItemId);
-
+  modalDelete() {
+    this.props.deleteCart(this.cartItemId);
+    this.setState({ modal: false });
   }
 
   createCartItems() {
@@ -34,7 +34,7 @@ export default class CartSummaryItem extends React.Component {
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
 
-            <i className="fas fa-times" onClick={ this.modalPop}></i>
+            <i className="fas fa-times" onClick={() => this.modalPop(cartItem)}></i>
           </div>
           <div className="centered">
             <img className="smallImg card-img-top col-12 col-md-4" src={cartItem.image}></img>
@@ -54,19 +54,19 @@ export default class CartSummaryItem extends React.Component {
     if (this.state.modal === true) {
       return (
         <>
-          <div className="exampleModal justify-content-center p-3 hidden">
+          <div className="exampleModal justify-content-center p-3">
             <div className="modal-background">
               <div className="modal-title text-center p-1">
               Remove item from cart?
               </div>
               <div className="d-flex justify-content-center">
                 <div className="p-2">
-                  <button className="btn btn-secondary p-2">
+                  <button className="btn btn-secondary p-2" onClick={this.modalCancel}>
                   Cancel
                   </button>
                 </div>
                 <div className="p-2">
-                  <button className="btn btn-danger p-2">
+                  <button className="btn btn-danger p-2" onClick={this.modalDelete}>
                   Remove
                   </button>
                 </div>
