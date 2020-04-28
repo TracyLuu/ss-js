@@ -22,8 +22,7 @@ export default class ProductDetails extends React.Component {
       });
   }
 
-  modalDirection(cartItem) {
-    this.setState({ });
+  modalDirection() {
     this.setState({ modalProduct: true });
   }
 
@@ -48,7 +47,9 @@ export default class ProductDetails extends React.Component {
           <span className="sr-only">Loading...</span>
         </div>
       );
-    } else if (this.modalProduct === true) {
+    }
+
+    if (this.modalProduct === true) {
       return (
         <>
           <div className="modal-container justify-content-center p-3">
@@ -63,7 +64,7 @@ export default class ProductDetails extends React.Component {
                   </button>
                 </div>
                 <div className="p-2">
-                  <button className="btn btn-danger p-2" >
+                  <button className="btn btn-danger p-2" onClick={(name, params) => this.props.setView('cart', {})}>
                     Checkout
                   </button>
                 </div>
@@ -82,7 +83,7 @@ export default class ProductDetails extends React.Component {
                   <div className="title-description">{this.state.product.name}</div>
                   <div className="price-description">${parseFloat(this.state.product.price / Math.pow(10, 2)).toFixed(2)}</div>
                   <div className="pb-3 short-description">{this.state.product.shortDescription}</div>
-                  <div><button type="button" className="btn btn-info" onClick={() => this.props.addToCart(product)}>Add to Cart</button></div>
+                  <div><button type="button" className="btn btn-info" onClick={this.modalDirection}>Add to Cart</button></div>
                 </div>
               </div>
               <div className="long-description col-12 p-3">{this.state.product.longDescription}</div>
