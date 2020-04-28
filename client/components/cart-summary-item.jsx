@@ -14,9 +14,7 @@ export default class CartSummaryItem extends React.Component {
   }
 
   modalPop() {
-    return (
-      this.setState({ modal: true })
-    );
+    this.setState({ modal: true });
   }
 
   modalCancel() {
@@ -32,7 +30,6 @@ export default class CartSummaryItem extends React.Component {
 
   createCartItems() {
     return (this.props.cart.map((cartItem, index) =>
-
       <div className="pl-2 pr-2" key={index}>
         <div className="card mb-3 p-3 cart">
           <div className="row pl-3">
