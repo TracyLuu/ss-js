@@ -197,3 +197,7 @@
   font-weight: 700;
   font-size: 1.3em;
 }
+
+.smaller-text {
+  font-size: .9rem;
+}

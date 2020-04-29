@@ -49,12 +49,12 @@ export default class ProductDetails extends React.Component {
               </div>
               <div className="d-flex justify-content-center">
                 <div className="p-2">
-                  <button className="btn btn-secondary p-2" onClick={(name, params) => this.props.setView('catalog', {})}>
+                  <button className="btn btn-secondary p-2 smaller-text" onClick={(name, params) => this.props.setView('catalog', {})}>
                     Continue Shopping
                   </button>
                 </div>
                 <div className="p-2">
-                  <button className="btn btn-danger p-2" onClick={(name, params) => this.props.setView('cart', {})}>
+                  <button className="btn btn-danger p-2 smaller-text" onClick={(name, params) => this.props.setView('cart', {})}>
                     Checkout
                   </button>
                 </div>
