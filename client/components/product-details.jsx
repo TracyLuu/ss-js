@@ -8,8 +8,6 @@ export default class ProductDetails extends React.Component {
       modalProduct: false
     };
     this.modalDirection = this.modalDirection.bind(this);
-    this.modalCheckout = this.modalCheckout.bind(this);
-    this.modalContinueShopping = this.modalContinueShopping.bind(this);
   }
 
   getOne() {
@@ -26,15 +24,6 @@ export default class ProductDetails extends React.Component {
     const product = this.state.product;
     this.props.addToCart(product);
     this.setState({ modalProduct: true });
-  }
-
-  modalContinueShopping() {
-    this.setState({ modalProduct: false });
-    this.props.setView('catalog', {});
-  }
-
-  modalCheckout() {
-    this.setState({ modalProduct: false });
   }
 
   componentDidMount() {
