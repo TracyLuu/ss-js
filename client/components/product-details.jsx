@@ -56,7 +56,7 @@ export default class ProductDetails extends React.Component {
           <div className="modal-container justify-content-center p-3">
             <div className="modal-background">
               <div className="modal-title text-center p-1">
-                Item has been added.
+                Item added to bag
               </div>
               <div className="d-flex justify-content-center">
                 <div className="p-2">
@@ -105,7 +105,7 @@ export default class ProductDetails extends React.Component {
                 <div className="title-description">{this.state.product.name}</div>
                 <div className="price-description">${parseFloat(this.state.product.price / Math.pow(10, 2)).toFixed(2)}</div>
                 <div className="pb-3 short-description">{this.state.product.shortDescription}</div>
-                <div><button type="button" className="btn btn-info" onClick={this.modalDirection}>Add to Cart</button></div>
+                <div><button type="button" className="btn btn-info" onClick={this.modalDirection}>Add to Bag</button></div>
               </div>
             </div>
             <div className="long-description col-12 p-3">{this.state.product.longDescription}</div>
