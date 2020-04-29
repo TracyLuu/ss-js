@@ -23,6 +23,8 @@ export default class ProductDetails extends React.Component {
   }
 
   modalDirection() {
+    const product = this.state.product;
+    this.props.addToCart(product);
     this.setState({ modalProduct: true });
   }
 
@@ -40,7 +42,6 @@ export default class ProductDetails extends React.Component {
   }
 
   render() {
-    const product = this.state.product;
     if (this.state.product === null) {
       return (
         <div className="spinner-grow text-info" role="status">
@@ -49,7 +50,7 @@ export default class ProductDetails extends React.Component {
       );
     }
 
-    if (this.modalProduct === true) {
+    if (this.state.modalProduct === true) {
       return (
         <>
           <div className="modal-container justify-content-center p-3">
@@ -104,7 +105,7 @@ export default class ProductDetails extends React.Component {
                 <div className="title-description">{this.state.product.name}</div>
                 <div className="price-description">${parseFloat(this.state.product.price / Math.pow(10, 2)).toFixed(2)}</div>
                 <div className="pb-3 short-description">{this.state.product.shortDescription}</div>
-                <div><button type="button" className="btn btn-info" onClick={() => this.props.addToCart(product)}>Add to Cart</button></div>
+                <div><button type="button" className="btn btn-info" onClick={this.modalDirection}>Add to Cart</button></div>
               </div>
             </div>
             <div className="long-description col-12 p-3">{this.state.product.longDescription}</div>
