@@ -54,7 +54,7 @@ export default class CartSummaryItem extends React.Component {
     if (this.state.modal === true) {
       return (
         <>
-          <div className="exampleModal justify-content-center p-3">
+          <div className="modal-container justify-content-center p-3">
             <div className="modal-background">
               <div className="modal-title text-center p-1">
               Remove item from cart?

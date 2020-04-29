@@ -170,7 +170,7 @@
   width: 100%
 }
 
-.exampleModal {
+.modal-container {
     top: 0;
     left: 0;
     position: fixed;
@@ -196,4 +196,8 @@
 .modal-title {
   font-weight: 700;
   font-size: 1.3em;
+}
+
+.smaller-text {
+  font-size: .9rem;
 }
