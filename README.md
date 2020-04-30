@@ -22,6 +22,7 @@ https://store.tracyluu.com/
 - User can add a product to their cart
 - User can add a product to their cart
 - User can view their cart summary
+- User can remove item in their cart summary
 - User can place an order (as long as form is valid)
 - Mobile Responsiveness
 
