@@ -28,7 +28,7 @@ https://store.tracyluu.com/
 
 ## Preview
 
-![](./server/public/images/041420.png)
+![](./server/public/images/043020.png)
 
 ## System Requirements
 
