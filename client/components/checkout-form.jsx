@@ -36,7 +36,6 @@ export default class CheckoutForm extends React.Component {
   }
 
   handleInputChange(event) {
-
     this.setState({
       [event.target.name]: !this.state.checked
     });
@@ -47,11 +46,10 @@ export default class CheckoutForm extends React.Component {
     this.props.placeOrder(this.state);
     this.props.setView('catalog', {});
     this.props.cart([]);
-    this.setState({ checked: !this.state.checked });
+    this.setState({ checked: false });
   }
 
   button() {
-    event.preventDefault();
     if (this.state.name && this.state.creditCard && this.state.shippingAddress && this.state.checked) {
       return (
         <div className="col my-4 mb-5 d-flex justify-content-space-around">
@@ -109,6 +107,7 @@ export default class CheckoutForm extends React.Component {
             <input
               name="checked"
               type="checkbox"
+              checked={this.state.checked}
               onChange={this.handleInputChange} />
             {' '}I understand that this is a demo and I should not use personal information.
 
