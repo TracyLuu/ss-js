@@ -6,12 +6,14 @@ export default class CheckoutForm extends React.Component {
     this.state = {
       name: '',
       creditCard: null,
-      shippingAddress: null
+      shippingAddress: null,
+      checked: false
     };
     this.handleName = this.handleName.bind(this);
     this.handleCC = this.handleCC.bind(this);
     this.handleShipping = this.handleShipping.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.button = this.button.bind(this);
   }
 
@@ -33,16 +35,22 @@ export default class CheckoutForm extends React.Component {
     });
   }
 
+  handleInputChange(event) {
+    this.setState({
+      [event.target.name]: !this.state.checked
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     this.props.placeOrder(this.state);
     this.props.setView('catalog', {});
     this.props.cart([]);
+    this.setState({ checked: false });
   }
 
   button() {
-    event.preventDefault();
-    if (this.state.name && this.state.creditCard && this.state.shippingAddress) {
+    if (this.state.name && this.state.creditCard && this.state.shippingAddress && this.state.checked) {
       return (
         <div className="col my-4 mb-5 d-flex justify-content-space-around">
           <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>
@@ -94,6 +102,15 @@ export default class CheckoutForm extends React.Component {
               <textarea className="form-control" name="shippingAddress" onChange={this.handleShipping}>
               </textarea>
             </div>
+          </label>
+          <label className="text-danger text-sm-left">
+            <input
+              name="checked"
+              type="checkbox"
+              checked={this.state.checked}
+              onChange={this.handleInputChange} />
+            {' '}I understand that this is a demo and I should not use personal information.
+
           </label>
           <div className="row pt-5">
             <div className="back-to-catalog p-3" onClick={(name, params) => this.props.setView(

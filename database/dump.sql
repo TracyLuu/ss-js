@@ -232,7 +232,19 @@ ALTER TABLE ONLY public.products ALTER COLUMN "productId" SET DEFAULT nextval('p
 COPY public."cartItems" ("cartItemId", "cartId", "productId", price, quantity) FROM stdin;
 296	18	2	2000	\N
 298	18	2	2000	\N
+305	22	3	1500	\N
+307	20	11	5400	\N
+318	23	15	3000	\N
+340	25	15	3000	\N
 297	18	3	1500	\N
+299	19	6	3200	\N
+303	22	3	1500	\N
+304	22	3	1500	\N
+306	20	18	6900	\N
+317	23	21	6500	\N
+324	24	20	2600	\N
+328	25	21	6500	\N
+339	25	19	2900	\N
 295	17	22	3800	\N
 \.
 
@@ -260,6 +272,14 @@ COPY public.carts ("cartId", "createdAt") FROM stdin;
 16	2020-04-20 19:24:08.65852+00
 17	2020-04-23 00:53:52.797222+00
 18	2020-04-23 01:54:58.313489+00
+19	2020-04-24 00:30:43.87346+00
+20	2020-04-25 00:05:37.273641+00
+21	2020-04-25 00:34:22.070802+00
+22	2020-04-25 00:35:24.381727+00
+23	2020-04-25 19:52:49.29868+00
+24	2020-04-27 15:20:03.842512+00
+25	2020-04-28 23:59:25.097626+00
+26	2020-04-29 23:50:04.882173+00
 \.
 
 
@@ -268,6 +288,7 @@ COPY public.carts ("cartId", "createdAt") FROM stdin;
 --
 
 COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", "createdAt") FROM stdin;
+98	19	Tracy	0000000000000000	123123 Address	2020-04-24 00:31:10.707653+00
 \.
 
 
@@ -307,21 +328,21 @@ COPY public.products ("productId", name, price, image, "shortDescription", "long
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 298, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 343, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 18, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 26, true);
 
 
 --
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 97, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 98, true);
 
 
 --
@@ -373,4 +394,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
