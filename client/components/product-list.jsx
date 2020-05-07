@@ -29,7 +29,7 @@ export default class ProductList extends React.Component {
     return (
       <div className="centered">
         <div>
-          <img src="/images/sunscreens.jpg" className="mb-2 fade-in landing shadow contain" alt="6 sunscreens from the list and text that says to protect your skin"></img>
+          <img src="/images/sunscreens.png" className="mb-2 fade-in landing contain" alt="6 sunscreens from the list and text that says to protect your skin"></img>
         </div>
         <ProductListItem setView={this.props.setView} view={this.props.view} products={this.state.products} />
       </div>
