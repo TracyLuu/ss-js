@@ -24,7 +24,7 @@ https://store.tracyluu.com/
 - User can view their cart summary
 - User can remove item in their cart summary
 - User can place an order (as long as form is valid)
-- User is required to enter information in otder to place order
+- User is required to enter all fields in otder to place order
 - Mobile Responsiveness
 
 ## Preview
