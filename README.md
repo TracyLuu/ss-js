@@ -1,5 +1,5 @@
 # SS-js
-A full stack Node.js and React e-commerce experience with sunscreen products. ☀️🧴
+A full stack Node.js and React e-commerce experience with sunscreen products. ☀️
 
 ## Technologies Used
 - React.js
